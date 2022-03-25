@@ -1,0 +1,14 @@
+logging:
+  level:
+    com.example: debug
+
+---
+spring:
+  profiles:
+    active: unit-test
+  sql:
+    init:
+      schema-locations: classpath*:sql/unit-test-schema.sql
+      data-locations: classpath*:sql/unit-test-data.sql
+  datasource:
+    url: jdbc

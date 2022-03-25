@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.generator.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.example.generator.model.User">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="enable" jdbcType="BIT" property="enable" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.example.generator.model.User">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="enable" jdbcType="BIT" property="enable"/>
+    </resultMap>
+    <resultMap id="UserVOResultMap" type="com.example.user.UserVO" extends="BaseResultMap">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <collection columnPrefix="tr_" property="roleVOList" resultMap="RoleVOResultMap"/>
+    </resultMap>
+    <resultMap id="RoleVOResultMap" type="com.example.user.RoleVO"
+               extends="com.example.generator.mapper.RoleMapper.BaseResultMap">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <collection columnPrefix="t_" property="resourceList"
+                    resultMap="com.example.generator.mapper.ResourceMapper.BaseResultMap"/>
+    </resultMap>
+    <select id="findAllFetchRoleAndResource" resultMap="UserVOResultMap">
+        select u.id,
+               u.username,
+               u.password,
+               u.enable,
+               tr.id          as tr_id,
+               tr.name        as tr_name,
+               tr.description as tr_description,
+               t.id           as tr_t_id,
+               t.name         as tr_t_name,
+               t.description  as tr_t_description
+        from t_user u
+                 left join r_user_role rur on u.id = rur.user_id
+                 left join t_role tr on rur.role_id = tr.id
+                 left outer join r_role_resource rrr on rur.role_id = rrr.role_id
+                 left join t_resource t on rrr.resource_id = t.id
+    </select>
 </mapper>
