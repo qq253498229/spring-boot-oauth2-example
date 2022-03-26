@@ -1,4 +1,4 @@
-insert into t_client (id, client_id, client_secret, registered_redirect_uri)
+insert into t_client (id, client_id, client_secret, registered_redirect_uri_str)
 values (1, 'client', '$2a$10$4exGEs2hdi0C5C8wiDzirOft5WLC7/WJFXVqz7cXhVw6/tnFOstZi', 'http://localhost:4200/login');
 insert into t_user (id, username, password)
 values (1, 'user', '$2a$10$UYfUeE54zgz3eb5sMDt2B.I7DZhXQxlboFHAkQjMGe3grcAmWXQCa'),

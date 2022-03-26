@@ -1,12 +1,15 @@
 package com.example.generator.model;
 
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * 表名：t_resource
- * 表注释：资源表
 */
 @Getter
 @Setter

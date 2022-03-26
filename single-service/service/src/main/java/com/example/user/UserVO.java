@@ -1,5 +1,6 @@
 package com.example.user;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.example.generator.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,6 +17,12 @@ import java.util.stream.Collectors;
 @Data
 public class UserVO extends User implements UserDetails {
     private List<RoleVO> roleVOList;
+
+    public static UserVO from(User user) {
+        UserVO userVO = new UserVO();
+        BeanUtil.copyProperties(user, userVO);
+        return userVO;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

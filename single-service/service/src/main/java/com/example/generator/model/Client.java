@@ -1,12 +1,15 @@
 package com.example.generator.model;
 
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * 表名：t_client
- * 表注释：client表
 */
 @Getter
 @Setter
@@ -38,27 +41,27 @@ public class Client {
     /**
      * 授权类型
      */
-    @Column(name = "`authorized_grant_types`")
-    private String authorizedGrantTypes;
+    @Column(name = "`authorized_grant_types_str`")
+    private String authorizedGrantTypesStr;
 
     /**
      * 跳转 uri
      */
-    @Column(name = "`registered_redirect_uri`")
-    private String registeredRedirectUri;
+    @Column(name = "`registered_redirect_uri_str`")
+    private String registeredRedirectUriStr;
 
-    @Column(name = "`scope`")
-    private String scope;
+    @Column(name = "`scope_str`")
+    private String scopeStr;
 
     @Column(name = "`auto_approve_scope`")
     private String autoApproveScope;
 
-    @Column(name = "`authorities`")
-    private String authorities;
+    @Column(name = "`authorities_str`")
+    private String authoritiesStr;
 
-    @Column(name = "`additional_information`")
-    private String additionalInformation;
+    @Column(name = "`additional_information_str`")
+    private String additionalInformationStr;
 
-    @Column(name = "`resource_ids`")
-    private String resourceIds;
+    @Column(name = "`resource_ids_str`")
+    private String resourceIdsStr;
 }

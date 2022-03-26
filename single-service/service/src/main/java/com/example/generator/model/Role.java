@@ -6,7 +6,6 @@ import lombok.Setter;
 
 /**
  * 表名：t_role
- * 表注释：角色表
 */
 @Getter
 @Setter
