@@ -22,7 +22,7 @@ class UserServiceTest {
     @Test
     void findAllFetchRoleAndResource() {
         UserVO userVO = new UserVO();
-        Mockito.when(userMapper.findAllFetchRoleAndResource()).thenReturn(List.of(userVO));
+        Mockito.when(userMapper.findAllFetchRoleAndResource(null)).thenReturn(List.of(userVO));
 
         List<UserVO> users = userService.findAllFetchRoleAndResource();
         Assertions.assertNotNull(users);

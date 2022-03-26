@@ -7,5 +7,5 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
-    List<UserVO> findAllFetchRoleAndResource();
+    List<UserVO> findAllFetchRoleAndResource(String username);
 }

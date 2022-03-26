@@ -1,6 +1,8 @@
 package com.example.auth;
 
 import cn.hutool.core.util.ReUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +40,7 @@ public class AuthTest {
      */
     @Test
     void getToken_password() throws Exception {
-        mockMvc.perform(
+        MvcResult mvcResult = mockMvc.perform(
                 post("/oauth/token")
                         .with(httpBasic(TEST_CLIENT, TEST_SECRET))
                         .param(GRANT_TYPE, "password")
@@ -52,6 +54,28 @@ public class AuthTest {
                 .andExpect(jsonPath("$.expires_in", notNullValue()))
                 .andExpect(jsonPath("$.scope", notNullValue()))
                 .andExpect(jsonPath("$.jti", notNullValue()))
+                .andReturn();
+
+        JSONObject jsonObject = JSONUtil.parseObj(mvcResult.getResponse().getContentAsString());
+        String token = jsonObject.getStr("access_token");
+
+        mockMvc.perform(
+                post("/oauth/check_token")
+                        .with(httpBasic(TEST_CLIENT, TEST_SECRET))
+                        .param("token", token)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.active").value(true))
+                .andExpect(jsonPath("$.exp").isNotEmpty())
+                .andExpect(jsonPath("$.exp").isNumber())
+                .andExpect(jsonPath("$.user_name").isNotEmpty())
+                .andExpect(jsonPath("$.user_name").value(TEST_USERNAME))
+                .andExpect(jsonPath("$.jti").isNotEmpty())
+                .andExpect(jsonPath("$.client_id").value(TEST_CLIENT))
+                .andExpect(jsonPath("$.scope").isNotEmpty())
+                .andExpect(jsonPath("$.scope").isArray())
+                .andExpect(jsonPath("$.authorities").isNotEmpty())
+                .andExpect(jsonPath("$.authorities").isArray())
         ;
     }
 

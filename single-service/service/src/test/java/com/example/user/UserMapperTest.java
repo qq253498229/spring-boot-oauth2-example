@@ -24,7 +24,7 @@ public class UserMapperTest {
 
     @Test
     void findAllFetchRoleAndResource() {
-        List<UserVO> allFetchRoleAndResource = userMapper.findAllFetchRoleAndResource();
+        List<UserVO> allFetchRoleAndResource = userMapper.findAllFetchRoleAndResource(null);
         assertEquals(allFetchRoleAndResource.size(), 2);
         assertEquals(allFetchRoleAndResource.get(0).getRoleVOList().size(), 1);
         assertEquals(allFetchRoleAndResource.get(1).getRoleVOList().size(), 2);
