@@ -39,9 +39,20 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
         return new JwtAccessTokenConverter();
     }
 
+    /**
+     * fixme
+     * 测试时用内存级，生产环境用redis
+     */
+    @Bean
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
+    }
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        security.passwordEncoder(passwordEncoder()).checkTokenAccess("isAuthenticated()");
+        security.passwordEncoder(passwordEncoder())
+                // jwt模式一般用不到
+                .checkTokenAccess("isAuthenticated()");
     }
 
     @Override
@@ -56,10 +67,5 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
                 .userDetailsService(userService)
                 .tokenStore(tokenStore())
         ;
-    }
-
-    @Bean
-    public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
     }
 }
