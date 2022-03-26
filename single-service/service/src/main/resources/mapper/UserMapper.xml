@@ -34,7 +34,7 @@
         from t_user u
                  left join r_user_role rur on u.id = rur.user_id
                  left join t_role tr on rur.role_id = tr.id
-                 left outer join r_role_resource rrr on rur.role_id = rrr.role_id
+                 left join r_role_resource rrr on rur.role_id = rrr.role_id
                  left join t_resource t on rrr.resource_id = t.id
     </select>
 </mapper>
