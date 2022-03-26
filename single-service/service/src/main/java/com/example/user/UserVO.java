@@ -45,6 +45,6 @@ public class UserVO extends User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.getEnable();
+        return this.getEnable() != null && this.getEnable();
     }
 }

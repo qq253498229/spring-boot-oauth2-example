@@ -1,5 +1,6 @@
 package com.example.user;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +13,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/oauth/user")
+    @PreAuthorize("hasAnyAuthority('showUserList')")
     public List<UserVO> list() {
         return userService.findAllFetchRoleAndResource();
     }
