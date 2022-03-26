@@ -14,6 +14,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * 权限测试
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("unit-test")
@@ -25,6 +28,9 @@ public class AuthTest {
     public static final String USERNAME = "user";
     public static final String PASSWORD = "user";
 
+    /**
+     * password方式获取token
+     */
     @Test
     void getToken_password() throws Exception {
         mockMvc.perform(
@@ -39,15 +45,27 @@ public class AuthTest {
         ;
     }
 
+    /**
+     * code方式获取token
+     */
     @Test
     void getToken_code() {
 
     }
 
+    /**
+     * 注册
+     */
     @Test
     void register() {
 
     }
 
+    /**
+     * 注销
+     */
+    @Test
+    void logout() {
 
+    }
 }
