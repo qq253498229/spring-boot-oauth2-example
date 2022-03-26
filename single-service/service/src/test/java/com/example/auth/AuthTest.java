@@ -59,6 +59,7 @@ public class AuthTest {
         JSONObject jsonObject = JSONUtil.parseObj(mvcResult.getResponse().getContentAsString());
         String token = jsonObject.getStr("access_token");
 
+        // jwt模式一般不会用到
         mockMvc.perform(
                 post("/oauth/check_token")
                         .with(httpBasic(TEST_CLIENT, TEST_SECRET))
@@ -76,6 +77,22 @@ public class AuthTest {
                 .andExpect(jsonPath("$.scope").isArray())
                 .andExpect(jsonPath("$.authorities").isNotEmpty())
                 .andExpect(jsonPath("$.authorities").isArray())
+        ;
+
+        String refreshToken = jsonObject.getStr("refresh_token");
+        mockMvc.perform(
+                post("/oauth/token")
+                        .with(httpBasic(TEST_CLIENT, TEST_SECRET))
+                        .param(GRANT_TYPE, "refresh_token")
+                        .param("refresh_token", refreshToken)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.access_token", notNullValue()))
+                .andExpect(jsonPath("$.token_type", notNullValue()))
+                .andExpect(jsonPath("$.refresh_token", notNullValue()))
+                .andExpect(jsonPath("$.expires_in", notNullValue()))
+                .andExpect(jsonPath("$.scope", notNullValue()))
+                .andExpect(jsonPath("$.jti", notNullValue()))
         ;
     }
 
