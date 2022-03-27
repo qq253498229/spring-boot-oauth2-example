@@ -162,6 +162,13 @@ public class AuthTest {
                 .exchange("/oauth/token", HttpMethod.POST, entity1, JSONObject.class);
 
         assertTokenResult(exchange);
+
+        exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
+
+        assertEquals(400, exchange.getStatusCodeValue());
+        body = exchange.getBody();
+        assertNotNull(body);
+        assertEquals("用户名已存在", body.getByPath("errors[0].defaultMessage"));
     }
 
     /**
