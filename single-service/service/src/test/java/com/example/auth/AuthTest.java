@@ -2,39 +2,29 @@ package com.example.auth;
 
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
+import com.example.utils.TestRequestUtils;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Resource;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.oauth2.common.util.OAuth2Utils.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * 权限测试
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 @ActiveProfiles("unit-test")
-@Import(ValidationAutoConfiguration.class)
 public class AuthTest {
     @Resource
-    MockMvc mockMvc;
+    TestRestTemplate testRestTemplate;
     public static final String TEST_CLIENT = "client";
     public static final String TEST_SECRET = "secret";
     public static final String TEST_USERNAME = "user";
@@ -44,145 +34,134 @@ public class AuthTest {
      * password方式获取token
      */
     @Test
-    void getToken_password() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(
-                post("/oauth/token")
-                        .with(httpBasic(TEST_CLIENT, TEST_SECRET))
-                        .param(GRANT_TYPE, "password")
-                        .param("username", TEST_USERNAME)
-                        .param("password", TEST_PASSWORD)
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.access_token", notNullValue()))
-                .andExpect(jsonPath("$.token_type", notNullValue()))
-                .andExpect(jsonPath("$.refresh_token", notNullValue()))
-                .andExpect(jsonPath("$.expires_in", notNullValue()))
-                .andExpect(jsonPath("$.scope", notNullValue()))
-                .andExpect(jsonPath("$.jti", notNullValue()))
-                .andReturn();
+    void getToken_password() {
+        HttpEntity<MultiValueMap<String, String>> entity = TestRequestUtils.urlEncodedRequest()
+                .put(GRANT_TYPE, "password")
+                .put("username", TEST_USERNAME)
+                .put("password", TEST_PASSWORD)
+                .build();
+        ResponseEntity<JSONObject> exchange = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/token", HttpMethod.POST, entity, JSONObject.class);
 
-        JSONObject jsonObject = JSONUtil.parseObj(mvcResult.getResponse().getContentAsString());
-        String token = jsonObject.getStr("access_token");
+        assertTokenResult(exchange);
 
-        // jwt模式一般不会用到
-        mockMvc.perform(
-                post("/oauth/check_token")
-                        .with(httpBasic(TEST_CLIENT, TEST_SECRET))
-                        .param("token", token)
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.active").value(true))
-                .andExpect(jsonPath("$.exp").isNotEmpty())
-                .andExpect(jsonPath("$.exp").isNumber())
-                .andExpect(jsonPath("$.user_name").isNotEmpty())
-                .andExpect(jsonPath("$.user_name").value(TEST_USERNAME))
-                .andExpect(jsonPath("$.jti").isNotEmpty())
-                .andExpect(jsonPath("$.client_id").value(TEST_CLIENT))
-                .andExpect(jsonPath("$.scope").isNotEmpty())
-                .andExpect(jsonPath("$.scope").isArray())
-                .andExpect(jsonPath("$.authorities").isNotEmpty())
-                .andExpect(jsonPath("$.authorities").isArray())
-        ;
+        assertNotNull(exchange.getBody());
+        String token = exchange.getBody().getStr("access_token");
 
-        String refreshToken = jsonObject.getStr("refresh_token");
-        mockMvc.perform(
-                post("/oauth/token")
-                        .with(httpBasic(TEST_CLIENT, TEST_SECRET))
-                        .param(GRANT_TYPE, "refresh_token")
-                        .param("refresh_token", refreshToken)
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.access_token", notNullValue()))
-                .andExpect(jsonPath("$.token_type", notNullValue()))
-                .andExpect(jsonPath("$.refresh_token", notNullValue()))
-                .andExpect(jsonPath("$.expires_in", notNullValue()))
-                .andExpect(jsonPath("$.scope", notNullValue()))
-                .andExpect(jsonPath("$.jti", notNullValue()))
-        ;
+        // jwt单体服务模式一般不会用到，在资源服务器常用
+        HttpEntity<MultiValueMap<String, String>> entity1 = TestRequestUtils.urlEncodedRequest()
+                .put("token", token).build();
+        ResponseEntity<JSONObject> exchange1 = testRestTemplate
+                .withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/check_token", HttpMethod.POST, entity1, JSONObject.class);
+
+        JSONObject body1 = exchange1.getBody();
+
+        assertEquals(200, exchange1.getStatusCodeValue());
+        assertNotNull(body1);
+        assertEquals(TEST_USERNAME, body1.getStr("user_name"));
+        assertTrue(body1.getBool("active"));
+        assertEquals(2, body1.getJSONArray("authorities").size());
+        assertEquals(TEST_CLIENT, body1.getStr("client_id"));
+        assertEquals(1, body1.getJSONArray("scope").size());
+        assertNotNull(body1.getInt("exp"));
+        assertNotNull(body1.getStr("jti"));
+
+        String refreshToken = exchange.getBody().getStr("refresh_token");
+
+        HttpEntity<MultiValueMap<String, String>> entity2 = TestRequestUtils.urlEncodedRequest()
+                .put(GRANT_TYPE, "refresh_token")
+                .put("refresh_token", refreshToken)
+                .build();
+        ResponseEntity<JSONObject> exchange2 = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/token", HttpMethod.POST, entity2, JSONObject.class);
+
+        assertTokenResult(exchange2);
+    }
+
+    private void assertTokenResult(ResponseEntity<JSONObject> exchange) {
+        JSONObject body = exchange.getBody();
+
+        assertEquals(200, exchange.getStatusCodeValue());
+        assertNotNull(body);
+        assertNotNull(body.get("token_type"));
+        assertNotNull(body.get("access_token"));
+        assertNotNull(body.get("refresh_token"));
+        assertNotNull(body.get("scope"));
+        assertNotNull(body.get("expires_in"));
+        assertNotNull(body.get("jti"));
     }
 
     /**
      * code方式获取token
      */
     @Test
-    void getToken_code() throws Exception {
+    void getToken_code() {
         String redirectUri = "http://localhost:4200/login";
-        MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/oauth/authorize")
-                        .with(httpBasic(TEST_USERNAME, TEST_PASSWORD))
-                        .param(RESPONSE_TYPE, "code")
-                        .param(REDIRECT_URI, redirectUri)
-                        .param(CLIENT_ID, TEST_CLIENT)
-        )
-                .andExpect(status().is3xxRedirection())
-                .andReturn();
+        HttpEntity<MultiValueMap<String, String>> entity = TestRequestUtils.urlEncodedRequest()
+                .put(RESPONSE_TYPE, "code")
+                .put(REDIRECT_URI, redirectUri)
+                .put(CLIENT_ID, TEST_CLIENT)
+                .build();
 
-        String location = mvcResult.getResponse().getHeader("location");
-        assertTrue(ReUtil.contains("code=", location));
-        String code = ReUtil.findAllGroup0("(?<=code=)\\S+", location).get(0);
+        ResponseEntity<String> exchange = testRestTemplate.withBasicAuth(TEST_USERNAME, TEST_PASSWORD)
+                .exchange("/oauth/authorize", HttpMethod.POST, entity, String.class);
 
-        mockMvc.perform(
-                post("/oauth/token")
-                        .with(httpBasic(TEST_CLIENT, TEST_SECRET))
-                        .param(GRANT_TYPE, "authorization_code")
-                        .param(REDIRECT_URI, redirectUri)
-                        .param("code", code)
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.access_token", notNullValue()))
-                .andExpect(jsonPath("$.token_type", notNullValue()))
-                .andExpect(jsonPath("$.refresh_token", notNullValue()))
-                .andExpect(jsonPath("$.expires_in", notNullValue()))
-                .andExpect(jsonPath("$.scope", notNullValue()))
-                .andExpect(jsonPath("$.jti", notNullValue()))
-        ;
+        assertTrue(exchange.getStatusCodeValue() == 303 || exchange.getStatusCodeValue() == 302);
+        assertNotNull(exchange.getHeaders().getLocation());
+        String query = exchange.getHeaders().getLocation().getQuery();
+        assertTrue(ReUtil.contains("code=", query));
+
+        String code = ReUtil.findAllGroup0("(?<=code=)\\S+", query).get(0);
+
+        HttpEntity<MultiValueMap<String, String>> entity1 = TestRequestUtils.urlEncodedRequest()
+                .put(GRANT_TYPE, "authorization_code")
+                .put(REDIRECT_URI, redirectUri)
+                .put("code", code)
+                .build();
+        ResponseEntity<JSONObject> exchange1 = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/token", HttpMethod.POST, entity1, JSONObject.class);
+
+        assertTokenResult(exchange1);
     }
 
     /**
      * 注册
      */
     @Test
-    void register() throws Exception {
-        String content = JSONUtil.createObj()
-                .set("username", "testUsername")
-                .toString();
-        mockMvc.perform(
-                post("/oauth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content)
-        )
-                .andExpect(status().isBadRequest())
-                // todo mockmvc不显示错误信息
-                .andExpect(jsonPath("$").isNotEmpty())
-                .andDo(print())
-        ;
+    void register() {
+        HttpEntity<JSONObject> entity = TestRequestUtils.jsonRequest().set("username", "testUsername").build();
+        ResponseEntity<JSONObject> exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
 
-        content = JSONUtil.createObj()
-                .set("password", "testPassword")
-                .toString();
-        mockMvc.perform(
-                post("/oauth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content)
-        )
-                .andExpect(status().isBadRequest())
-                // todo mockmvc不显示错误信息
-                .andExpect(jsonPath("$").isNotEmpty())
-                .andDo(print())
-        ;
+        assertEquals(400, exchange.getStatusCodeValue());
+        JSONObject body = exchange.getBody();
+        assertNotNull(body);
+        assertEquals("密码不能为空", body.getByPath("errors[0].defaultMessage"));
 
-        content = JSONUtil.createObj()
+        entity = TestRequestUtils.jsonRequest().set("password", "testPassword").build();
+        exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
+
+        assertEquals(400, exchange.getStatusCodeValue());
+        body = exchange.getBody();
+        assertNotNull(body);
+        assertEquals("用户名不能为空", body.getByPath("errors[0].defaultMessage"));
+
+        entity = TestRequestUtils.jsonRequest()
                 .set("username", "testUsername")
-                .set("password", "testPassword")
-                .toString();
-        mockMvc.perform(
-                post("/oauth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content)
-        )
-                .andExpect(status().isOk())
-                .andDo(print())
-        ;
+                .set("password", "testPassword").build();
+        exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
+
+        assertEquals(200, exchange.getStatusCodeValue());
+
+        HttpEntity<MultiValueMap<String, String>> entity1 = TestRequestUtils.urlEncodedRequest()
+                .put(GRANT_TYPE, "password")
+                .put("username", "testUsername")
+                .put("password", "testPassword")
+                .build();
+        exchange = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/token", HttpMethod.POST, entity1, JSONObject.class);
+
+        assertTokenResult(exchange);
     }
 
     /**

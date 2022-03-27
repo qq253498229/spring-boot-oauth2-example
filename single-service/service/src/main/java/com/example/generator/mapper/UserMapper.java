@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
     List<UserVO> findAllFetchRoleAndResource(String username);
+
+    void initRoleByUserId(Integer id);
 }
