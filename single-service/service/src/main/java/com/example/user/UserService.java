@@ -22,4 +22,9 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userMapper.findAllFetchRoleAndResource(username).get(0);
     }
+
+    public void register(UserRegisterVO userRegisterVO) {
+        // todo
+        System.out.println(1);
+    }
 }

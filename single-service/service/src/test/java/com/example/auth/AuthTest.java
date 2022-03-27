@@ -4,8 +4,11 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -18,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.oauth2.common.util.OAuth2Utils.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("unit-test")
+@Import(ValidationAutoConfiguration.class)
 public class AuthTest {
     @Resource
     MockMvc mockMvc;
@@ -137,8 +142,47 @@ public class AuthTest {
      * 注册
      */
     @Test
-    void register() {
+    void register() throws Exception {
+        String content = JSONUtil.createObj()
+                .set("username", "testUsername")
+                .toString();
+        mockMvc.perform(
+                post("/oauth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+        )
+                .andExpect(status().isBadRequest())
+                // todo mockmvc不显示错误信息
+                .andExpect(jsonPath("$").isNotEmpty())
+                .andDo(print())
+        ;
 
+        content = JSONUtil.createObj()
+                .set("password", "testPassword")
+                .toString();
+        mockMvc.perform(
+                post("/oauth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+        )
+                .andExpect(status().isBadRequest())
+                // todo mockmvc不显示错误信息
+                .andExpect(jsonPath("$").isNotEmpty())
+                .andDo(print())
+        ;
+
+        content = JSONUtil.createObj()
+                .set("username", "testUsername")
+                .set("password", "testPassword")
+                .toString();
+        mockMvc.perform(
+                post("/oauth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+        )
+                .andExpect(status().isOk())
+                .andDo(print())
+        ;
     }
 
     /**

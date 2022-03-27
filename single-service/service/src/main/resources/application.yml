@@ -3,3 +3,6 @@ mybatis:
 spring:
   main:
     allow-circular-references: true
+server:
+  error:
+    include-binding-errors: always
