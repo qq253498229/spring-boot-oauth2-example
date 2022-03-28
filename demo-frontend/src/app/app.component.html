@@ -4,10 +4,11 @@
   <button routerLink="/user/list">用户列表</button>
 
   <div class="right" *ngIf="!username">
+    <button (click)="authLogin()">单点登录</button>
     <button routerLink="/login">登录</button>
   </div>
   <div class="right" *ngIf="!!username">
-    <span>您好</span>
+    <span>您好,{{username}}</span>
   </div>
 </div>
 <router-outlet></router-outlet>

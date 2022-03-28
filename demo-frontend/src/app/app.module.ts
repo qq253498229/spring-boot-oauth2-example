@@ -7,11 +7,17 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IndexComponent} from './pages/index/index.component';
 import {UserListComponent} from './pages/user-list/user-list.component';
 import {LoginComponent} from './pages/login/login.component';
+import {LoginGuard} from "./common/login.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: 'index', pathMatch: 'full'},
   {path: 'index', component: IndexComponent},
-  {path: 'login', component: LoginComponent},
+  {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
+  {
+    path: 'user', children: [
+      {path: 'list', component: UserListComponent},
+    ]
+  },
 ]
 
 @NgModule({
