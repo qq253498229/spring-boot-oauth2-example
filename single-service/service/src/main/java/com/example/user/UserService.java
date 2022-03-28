@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -27,7 +28,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userMapper.findAllFetchRoleAndResource(username).get(0);
+        List<UserVO> allFetchRoleAndResource = userMapper.findAllFetchRoleAndResource(username);
+        if (ObjectUtils.isEmpty(allFetchRoleAndResource)) {
+            throw new UsernameNotFoundException("用户名不存在");
+        }
+        return allFetchRoleAndResource.get(0);
     }
 
     public void register(UserRegisterVO userRegisterVO) {
