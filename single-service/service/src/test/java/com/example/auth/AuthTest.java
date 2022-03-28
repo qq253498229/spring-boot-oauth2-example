@@ -195,6 +195,11 @@ public class AuthTest {
      */
     @Test
     void logout() {
-
+        // 1.获取用户token
+        // 校验返回结果
+        // 暂存token
+        // 2.通过用户身份调用注销接口
+        // 校验返回结果
+        // 3.再次使用token调用check_token接口测试token是否失效
     }
 }
