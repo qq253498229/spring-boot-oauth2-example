@@ -15,6 +15,9 @@ public class UserController {
     @Resource
     UserService userService;
 
+    /**
+     * 查看用户列表
+     */
     @GetMapping("/oauth/user")
     @PreAuthorize("hasAnyAuthority('showUserList')")
     public List<UserVO> list() {
