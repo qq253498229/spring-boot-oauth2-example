@@ -24,6 +24,9 @@ public class UserController {
         return userService.findAllFetchRoleAndResource();
     }
 
+    /**
+     * 用户注册
+     */
     @PostMapping("/oauth/register")
     public void register(@RequestBody @Validated UserRegisterVO userRegisterVO) {
         userService.register(userRegisterVO);
