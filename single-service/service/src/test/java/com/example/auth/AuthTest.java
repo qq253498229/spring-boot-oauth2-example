@@ -35,6 +35,7 @@ public class AuthTest {
      */
     @Test
     void getToken_password() {
+        // 1.测试获取token接口
         HttpEntity<MultiValueMap<String, String>> entity = TestRequestUtils.urlEncodedRequest()
                 .put(GRANT_TYPE, "password")
                 .put("username", TEST_USERNAME)
@@ -43,11 +44,13 @@ public class AuthTest {
         ResponseEntity<JSONObject> exchange = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
                 .exchange("/oauth/token", HttpMethod.POST, entity, JSONObject.class);
 
+        // 验证token
         assertTokenResult(exchange);
 
         assertNotNull(exchange.getBody());
         String token = exchange.getBody().getStr("access_token");
 
+        // 2.测试check_token接口
         // jwt单体服务模式一般不会用到，在资源服务器常用
         HttpEntity<MultiValueMap<String, String>> entity1 = TestRequestUtils.urlEncodedRequest()
                 .put("token", token).build();
@@ -55,8 +58,8 @@ public class AuthTest {
                 .withBasicAuth(TEST_CLIENT, TEST_SECRET)
                 .exchange("/oauth/check_token", HttpMethod.POST, entity1, JSONObject.class);
 
+        // 验证结果
         JSONObject body1 = exchange1.getBody();
-
         assertEquals(200, exchange1.getStatusCodeValue());
         assertNotNull(body1);
         assertEquals(TEST_USERNAME, body1.getStr("user_name"));
@@ -69,6 +72,7 @@ public class AuthTest {
 
         String refreshToken = exchange.getBody().getStr("refresh_token");
 
+        // 3.测试刷新token接口
         HttpEntity<MultiValueMap<String, String>> entity2 = TestRequestUtils.urlEncodedRequest()
                 .put(GRANT_TYPE, "refresh_token")
                 .put("refresh_token", refreshToken)
@@ -76,6 +80,7 @@ public class AuthTest {
         ResponseEntity<JSONObject> exchange2 = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
                 .exchange("/oauth/token", HttpMethod.POST, entity2, JSONObject.class);
 
+        // 验证返回token
         assertTokenResult(exchange2);
     }
 
@@ -97,6 +102,7 @@ public class AuthTest {
      */
     @Test
     void getToken_code() {
+        // 1.访问权限url
         String redirectUri = "http://localhost:4200/login";
         HttpEntity<MultiValueMap<String, String>> entity = TestRequestUtils.urlEncodedRequest()
                 .put(RESPONSE_TYPE, "code")
@@ -112,8 +118,10 @@ public class AuthTest {
         String query = exchange.getHeaders().getLocation().getQuery();
         assertTrue(ReUtil.contains("code=", query));
 
+        // 在跳转页面url中拿到code
         String code = ReUtil.findAllGroup0("(?<=code=)\\S+", query).get(0);
 
+        // 2.通过code获取token
         HttpEntity<MultiValueMap<String, String>> entity1 = TestRequestUtils.urlEncodedRequest()
                 .put(GRANT_TYPE, "authorization_code")
                 .put(REDIRECT_URI, redirectUri)
@@ -122,6 +130,7 @@ public class AuthTest {
         ResponseEntity<JSONObject> exchange1 = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
                 .exchange("/oauth/token", HttpMethod.POST, entity1, JSONObject.class);
 
+        // 校验返回的token
         assertTokenResult(exchange1);
     }
 
@@ -130,29 +139,36 @@ public class AuthTest {
      */
     @Test
     void register() {
+        // 1.测试注册请求---只传用户名
         HttpEntity<JSONObject> entity = TestRequestUtils.jsonRequest().set("username", "testUsername").build();
         ResponseEntity<JSONObject> exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
 
+        // 校验返回错误消息
         assertEquals(400, exchange.getStatusCodeValue());
         JSONObject body = exchange.getBody();
         assertNotNull(body);
         assertEquals("密码不能为空", body.getByPath("errors[0].defaultMessage"));
 
+        // 2.测试注册请求---只传密码
         entity = TestRequestUtils.jsonRequest().set("password", "testPassword").build();
         exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
 
+        // 校验返回错误消息
         assertEquals(400, exchange.getStatusCodeValue());
         body = exchange.getBody();
         assertNotNull(body);
         assertEquals("用户名不能为空", body.getByPath("errors[0].defaultMessage"));
 
+        // 3.测试注册请求---正确的
         entity = TestRequestUtils.jsonRequest()
                 .set("username", "testUsername")
                 .set("password", "testPassword").build();
         exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
 
+        // 校验注册成功
         assertEquals(200, exchange.getStatusCodeValue());
 
+        // 4.使用新注册的用户获取token
         HttpEntity<MultiValueMap<String, String>> entity1 = TestRequestUtils.urlEncodedRequest()
                 .put(GRANT_TYPE, "password")
                 .put("username", "testUsername")
@@ -161,10 +177,13 @@ public class AuthTest {
         exchange = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
                 .exchange("/oauth/token", HttpMethod.POST, entity1, JSONObject.class);
 
+        // 校验返回的token
         assertTokenResult(exchange);
 
+        // 5.使用重复的用户名注册
         exchange = testRestTemplate.exchange("/oauth/register", HttpMethod.POST, entity, JSONObject.class);
 
+        // 校验返回的错误消息
         assertEquals(400, exchange.getStatusCodeValue());
         body = exchange.getBody();
         assertNotNull(body);

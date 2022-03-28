@@ -51,7 +51,7 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security.passwordEncoder(passwordEncoder())
-                // jwt模式一般用不到
+                // jwt单体服务模式一般不会用到，在资源服务器常用
                 .checkTokenAccess("isAuthenticated()");
     }
 
