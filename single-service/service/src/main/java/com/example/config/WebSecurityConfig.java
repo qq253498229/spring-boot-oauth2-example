@@ -1,5 +1,6 @@
 package com.example.config;
 
+import com.example.user.CustomLogoutHandler;
 import com.example.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     UserService userService;
     @Resource
     PasswordEncoder passwordEncoder;
+    @Resource
+    CustomLogoutHandler customLogoutHandler;
 
     @Bean
     @Override
@@ -38,6 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/oauth/register").permitAll()
                 .anyRequest().authenticated();
+        http.logout().logoutUrl("/oauth/logout")
+                .addLogoutHandler(customLogoutHandler)
+                .logoutSuccessHandler(customLogoutHandler);
         http.formLogin();
         http.csrf().disable().httpBasic();
     }

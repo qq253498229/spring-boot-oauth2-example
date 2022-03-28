@@ -1,5 +1,6 @@
 package com.example.auth;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.json.JSONObject;
 import com.example.utils.TestRequestUtils;
@@ -13,6 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.oauth2.common.util.OAuth2Utils.*;
@@ -197,10 +200,40 @@ public class AuthTest {
     @Test
     void logout() {
         // 1.获取用户token
+        HttpEntity<MultiValueMap<String, String>> entity = TestRequestUtils.urlEncodedRequest()
+                .put(GRANT_TYPE, "password")
+                .put("username", TEST_USERNAME)
+                .put("password", TEST_PASSWORD)
+                .build();
+        ResponseEntity<JSONObject> exchange = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/token", HttpMethod.POST, entity, JSONObject.class);
         // 校验返回结果
+        assertTokenResult(exchange);
         // 暂存token
+        assertNotNull(exchange.getBody());
+        String token = exchange.getBody().getStr("access_token");
         // 2.通过用户身份调用注销接口
+        String redirectUri = "http://localhost:4200/login";
+        Map<String, String> variables = MapUtil.builder(new HashMap<String, String>())
+                .put("token", token)
+                .put("redirect", redirectUri)
+                .build();
+        // fixme 这里不知道为啥必须要加上httpclient依赖才能捕捉到30x的状态码，否则会报错
+        ResponseEntity<String> exchange1 = testRestTemplate.getForEntity("/oauth/logout?token={token}&redirect={redirect}",
+                String.class, variables);
         // 校验返回结果
+        assertTrue(exchange1.getStatusCodeValue() == 303 || exchange1.getStatusCodeValue() == 302);
+        assertNotNull(exchange1.getHeaders().getLocation());
+        assertEquals(redirectUri, exchange1.getHeaders().getLocation().toString());
         // 3.再次使用token调用check_token接口测试token是否失效
+        HttpEntity<MultiValueMap<String, String>> entity1 = TestRequestUtils.urlEncodedRequest()
+                .put("token", token).build();
+        ResponseEntity<JSONObject> exchange2 = testRestTemplate
+                .withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/check_token", HttpMethod.POST, entity1, JSONObject.class);
+        // 校验返回的错误信息
+        assertEquals(400, exchange2.getStatusCodeValue());
+        assertNotNull(exchange2.getBody());
+        assertEquals("invalid_token", exchange2.getBody().getStr("error"));
     }
 }
