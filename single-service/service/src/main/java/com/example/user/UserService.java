@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -36,5 +37,11 @@ public class UserService implements UserDetailsService {
         userMapper.insertSelective(user);
         assertNotNull(user.getId());
         userMapper.initRoleByUserId(user.getId());
+    }
+
+    public User selectUserByUsername(String username) {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("username", username);
+        return userMapper.selectOneByExample(example);
     }
 }

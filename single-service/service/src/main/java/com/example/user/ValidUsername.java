@@ -1,9 +1,5 @@
 package com.example.user;
 
-import com.example.generator.mapper.UserMapper;
-import com.example.generator.model.User;
-import tk.mybatis.mapper.entity.Example;
-
 import javax.annotation.Resource;
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
@@ -27,14 +23,11 @@ public @interface ValidUsername {
 
     class UsernameValidator implements ConstraintValidator<ValidUsername, String> {
         @Resource
-        UserMapper userMapper;
+        UserService userService;
 
         @Override
         public boolean isValid(String value, ConstraintValidatorContext context) {
-            Example example = new Example(User.class);
-            example.createCriteria().andEqualTo("username", value);
-            User user = userMapper.selectOneByExample(example);
-            return user == null;
+            return userService.selectUserByUsername(value) == null;
         }
     }
 }
