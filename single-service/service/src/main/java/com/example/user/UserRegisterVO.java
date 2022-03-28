@@ -4,6 +4,9 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 注册用户时使用的vo
+ */
 @Data
 public class UserRegisterVO {
     @NotBlank(message = "用户名不能为空")
