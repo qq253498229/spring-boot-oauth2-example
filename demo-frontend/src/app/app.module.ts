@@ -5,6 +5,7 @@ import {AppComponent} from './app.component';
 import {RouterModule, Routes} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IndexComponent} from './pages/index/index.component';
+import {UserListComponent} from './pages/user-list/user-list.component';
 import {LoginComponent} from './pages/login/login.component';
 
 const routes: Routes = [
@@ -17,7 +18,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     IndexComponent,
-    LoginComponent
+    LoginComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,
