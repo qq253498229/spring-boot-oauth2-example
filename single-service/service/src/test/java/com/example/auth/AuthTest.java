@@ -195,7 +195,6 @@ public class AuthTest {
 
     /**
      * 注销
-     * todo
      */
     @Test
     void logout() {
