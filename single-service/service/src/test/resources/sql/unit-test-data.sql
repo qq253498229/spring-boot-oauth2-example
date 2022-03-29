@@ -13,10 +13,10 @@ values (1, 1),
        (2, 2)
 ;
 insert into t_resource (id, name, description)
-values (1, 'showUserPersonalInformation', '用户个人信息'),
+values (1, 'showPersonalRole', '查看个人角色'),
        (2, 'changePersonalPassword', '修改个人密码'),
        (3, 'showUserList', '查看用户列表'),
-       (4, 'resetPassword', '重置用户密码')
+       (4, 'resetUserPassword', '重置用户密码')
 ;
 insert into r_role_resource (role_id, resource_id)
 values (1, 1),
