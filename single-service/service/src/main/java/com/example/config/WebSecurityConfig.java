@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  * <br>
  * WebSecurity 的优先级必须高于 ResourceServer,
  * 否则因为加载顺序问题会出bug；
- * 而 ResourceServer 的默认 Order 是 100，
+ * 而 ResourceServer 的默认 Order 是 3，
  * 所以将 WebSecurity 的 Order 设置为 1
  */
 @Configuration
