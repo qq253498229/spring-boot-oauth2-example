@@ -4,3 +4,6 @@ spring:
     password: root
     url: jdbc:mysql://localhost:3306/spring-boot-oauth2-example
     driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+  pattern:
+    console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:HH:mm:ss.SSS}}){faint} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
