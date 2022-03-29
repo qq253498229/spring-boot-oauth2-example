@@ -48,4 +48,29 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized())
         ;
     }
+
+    @Test
+    void showPersonalRole_401() throws Exception {
+        mockMvc.perform(get("/oauth/user/role"))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
+    @WithMockUser
+    @Test
+    void showPersonalRole_403() throws Exception {
+        mockMvc.perform(get("/oauth/user/role"))
+                .andExpect(status().isForbidden())
+        ;
+    }
+
+    @Test
+    @WithMockUser(authorities = {"showPersonalRole"})
+    void showPersonalRole() throws Exception {
+        mockMvc.perform(get("/oauth/user/role"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0]").value("普通用户"))
+        ;
+    }
 }

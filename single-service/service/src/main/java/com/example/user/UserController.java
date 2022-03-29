@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,16 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('showUserList')")
     public List<UserVO> list() {
         return userService.findAllFetchRoleAndResource();
+    }
+
+    /**
+     * 查看个人角色
+     */
+    @GetMapping("/oauth/user/role")
+    @PreAuthorize("hasAnyAuthority('showPersonalRole')")
+    public List<String> showPersonalRole(Principal principal) {
+        String username = principal.getName();
+        return userService.showPersonalRole(username);
     }
 
     /**

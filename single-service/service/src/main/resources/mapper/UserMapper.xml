@@ -46,4 +46,16 @@
         insert into r_user_role (user_id, role_id)
         values (#{0}, 1)
     </insert>
+    <select id="showPersonalRole" resultType="java.lang.String">
+        select
+        r.description
+        from t_role r
+        left join r_user_role rur on r.id = rur.role_id
+        left join t_user tu on rur.user_id = tu.id
+        <where>
+            <if test="username != null and username != ''">
+                and tu.username = #{username}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -49,4 +49,8 @@ public class UserService implements UserDetailsService {
         example.createCriteria().andEqualTo("username", username);
         return userMapper.selectOneByExample(example);
     }
+
+    public List<String> showPersonalRole(String username) {
+        return userMapper.showPersonalRole(username);
+    }
 }
