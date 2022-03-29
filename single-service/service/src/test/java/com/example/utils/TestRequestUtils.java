@@ -35,6 +35,11 @@ public class TestRequestUtils {
             return this;
         }
 
+        public UrlEncodedRequestBuilder header(String name, String value) {
+            this.getHeaders().set(name, value);
+            return this;
+        }
+
         public HttpEntity<MultiValueMap<String, String>> build() {
             return new HttpEntity<>(body, headers);
         }
@@ -47,6 +52,11 @@ public class TestRequestUtils {
 
         public JsonRequestBuilder set(String key, String value) {
             this.getBody().set(key, value);
+            return this;
+        }
+
+        public JsonRequestBuilder header(String name, String value) {
+            this.getHeaders().set(name, value);
             return this;
         }
 
