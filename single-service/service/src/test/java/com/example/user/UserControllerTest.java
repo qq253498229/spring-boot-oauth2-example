@@ -1,8 +1,10 @@
 package com.example.user;
 
+import com.example.configuration.TestResourceServerConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -17,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 用户接口测试
  */
 @SpringBootTest
+@Import(TestResourceServerConfig.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
     public static final String USER_LIST = "/oauth/user";

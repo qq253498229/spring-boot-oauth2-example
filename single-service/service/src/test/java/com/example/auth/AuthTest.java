@@ -3,10 +3,12 @@ package com.example.auth;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.json.JSONObject;
+import com.example.configuration.TestResourceServerConfig;
 import com.example.utils.TestRequestUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import static org.springframework.security.oauth2.common.util.OAuth2Utils.*;
  * 权限测试
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestResourceServerConfig.class)
 @ActiveProfiles("unit-test")
 public class AuthTest {
     @Resource

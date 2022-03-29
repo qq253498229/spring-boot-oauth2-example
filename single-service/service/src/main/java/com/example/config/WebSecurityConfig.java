@@ -4,6 +4,7 @@ import com.example.user.CustomLogoutHandler;
 import com.example.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -16,10 +17,16 @@ import javax.annotation.Resource;
 
 /**
  * Web安全相关配置
+ * <br>
+ * WebSecurity 的优先级必须高于 ResourceServer,
+ * 否则因为加载顺序问题会出bug；
+ * 而 ResourceServer 的默认 Order 是 100，
+ * 所以将 WebSecurity 的 Order 设置为 1
  */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(1)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     UserService userService;
