@@ -10,4 +10,19 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="enable" jdbcType="BIT" property="enable"/>
     </resultMap>
+    <resultMap extends="com.example.generator.mapper.UserDetailMapper.BaseResultMap"
+               id="UserDetailMap" type="com.example.user.UserVO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+    </resultMap>
+    <select id="selectAllFetchDetail" resultMap="UserDetailMap">
+        select u.username,
+               tud.id,
+               tud.user_id,
+               tud.name,
+               tud.age,
+               tud.email,
+               tud.gender
+        from t_user u
+                 left join t_user_detail tud on u.id = tud.user_id
+    </select>
 </mapper>
