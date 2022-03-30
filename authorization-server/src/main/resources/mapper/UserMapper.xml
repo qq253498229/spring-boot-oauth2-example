@@ -58,4 +58,9 @@
             </if>
         </where>
     </select>
+    <update id="changePassword">
+        update t_user
+        set password = #{param2}
+        where username = #{param1}
+    </update>
 </mapper>

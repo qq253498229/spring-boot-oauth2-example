@@ -2,12 +2,16 @@ package com.example.user;
 
 import com.example.generator.mapper.UserMapper;
 import com.example.generator.model.User;
+import com.example.user.bean.UserChangePasswordVO;
 import com.example.user.bean.UserRegisterVO;
 import com.example.user.bean.UserVO;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -23,6 +27,8 @@ public class UserService implements UserDetailsService {
     UserMapper userMapper;
     @Resource
     PasswordEncoder passwordEncoder;
+    @Resource
+    TokenStore tokenStore;
 
     public List<UserVO> findAllFetchRoleAndResource() {
         return userMapper.findAllFetchRoleAndResource(null);
@@ -52,7 +58,17 @@ public class UserService implements UserDetailsService {
         return userMapper.selectOneByExample(example);
     }
 
-    public List<String> showPersonalRole(String username) {
-        return userMapper.showPersonalRole(username);
+    public void changePassword(UserChangePasswordVO userChangePasswordVO) {
+        String token = userChangePasswordVO.getToken();
+        OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(token);
+        String username = oAuth2Authentication.getName();
+        userMapper.changePassword(username, passwordEncoder.encode(userChangePasswordVO.getPassword()));
+        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
+        if (oAuth2AccessToken.getRefreshToken() != null) {
+            // 在token存储中移除refresh_token
+            tokenStore.removeRefreshToken(oAuth2AccessToken.getRefreshToken());
+        }
+        // 在token存储中移除access_token
+        tokenStore.removeAccessToken(oAuth2AccessToken);
     }
 }

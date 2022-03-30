@@ -56,6 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // 注册接口允许未登录用户访问
                 .antMatchers("/oauth/register").anonymous()
+                // 修改密码接口允许所有人访问
+                .antMatchers("/oauth/changePassword").permitAll()
                 // 其余未指定的所有请求都需要授权
                 .anyRequest().authenticated();
         http

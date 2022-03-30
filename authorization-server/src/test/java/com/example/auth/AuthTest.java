@@ -235,4 +235,73 @@ public class AuthTest {
         assertNotNull(exchange2.getBody());
         assertEquals("invalid_token", exchange2.getBody().getStr("error"));
     }
+
+    /**
+     * 修改密码
+     */
+    @Test
+    void changePassword() {
+        // 1.获取用户token
+        HttpEntity<MultiValueMap<String, String>> entity = TestRequestUtils.urlEncodedRequest()
+                .put(GRANT_TYPE, "password")
+                .put("username", TEST_USERNAME)
+                .put("password", TEST_PASSWORD)
+                .build();
+        ResponseEntity<JSONObject> exchange = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/token", HttpMethod.POST, entity, JSONObject.class);
+        // 校验返回结果
+        assertTokenResult(exchange);
+        // 暂存token
+        assertNotNull(exchange.getBody());
+        String token = exchange.getBody().getStr("access_token");
+        // 2.修改用户密码
+        HttpEntity<JSONObject> entity1 = TestRequestUtils.jsonRequest()
+                .set("token", token)
+                .set("password", "changePasswordNewPwd")
+                .build();
+        ResponseEntity<JSONObject> exchange1 = testRestTemplate.exchange("/oauth/changePassword",
+                HttpMethod.POST, entity1, JSONObject.class);
+        // 校验返回结果
+        assertEquals(200, exchange1.getStatusCodeValue());
+        // 3.再次使用token调用check_token接口测试token是否失效
+        HttpEntity<MultiValueMap<String, String>> entity2 = TestRequestUtils.urlEncodedRequest()
+                .put("token", token).build();
+        ResponseEntity<JSONObject> exchange2 = testRestTemplate
+                .withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/check_token", HttpMethod.POST, entity2, JSONObject.class);
+        // 校验返回的错误信息
+        assertEquals(400, exchange2.getStatusCodeValue());
+        assertNotNull(exchange2.getBody());
+        assertEquals("invalid_token", exchange2.getBody().getStr("error"));
+        // 4.使用新密码获取token
+        HttpEntity<MultiValueMap<String, String>> entity3 = TestRequestUtils.urlEncodedRequest()
+                .put(GRANT_TYPE, "password")
+                .put("username", TEST_USERNAME)
+                .put("password", "changePasswordNewPwd")
+                .build();
+        ResponseEntity<JSONObject> exchange3 = testRestTemplate.withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/token", HttpMethod.POST, entity3, JSONObject.class);
+        // 校验返回结果
+        assertTokenResult(exchange3);
+        // 暂存token
+        assertNotNull(exchange3.getBody());
+        String token3 = exchange3.getBody().getStr("access_token");
+        // 5.使用新的token调用check_token接口
+        HttpEntity<MultiValueMap<String, String>> entity4 = TestRequestUtils.urlEncodedRequest()
+                .put("token", token3).build();
+        ResponseEntity<JSONObject> exchange4 = testRestTemplate
+                .withBasicAuth(TEST_CLIENT, TEST_SECRET)
+                .exchange("/oauth/check_token", HttpMethod.POST, entity4, JSONObject.class);
+        // 校验返回结果
+        JSONObject body1 = exchange4.getBody();
+        assertEquals(200, exchange4.getStatusCodeValue());
+        assertNotNull(body1);
+        assertEquals(TEST_USERNAME, body1.getStr("user_name"));
+        assertTrue(body1.getBool("active"));
+        assertEquals(2, body1.getJSONArray("authorities").size());
+        assertEquals(TEST_CLIENT, body1.getStr("client_id"));
+        assertEquals(1, body1.getJSONArray("scope").size());
+        assertNotNull(body1.getInt("exp"));
+        assertNotNull(body1.getStr("jti"));
+    }
 }

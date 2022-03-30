@@ -1,5 +1,6 @@
 package com.example.user;
 
+import com.example.user.bean.UserChangePasswordVO;
 import com.example.user.bean.UserRegisterVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,5 +20,10 @@ public class UserController {
     @PostMapping("/oauth/register")
     public void register(@RequestBody @Validated UserRegisterVO userRegisterVO) {
         userService.register(userRegisterVO);
+    }
+
+    @PostMapping("/oauth/changePassword")
+    public void changePassword(@RequestBody @Validated UserChangePasswordVO userChangePasswordVO) {
+        userService.changePassword(userChangePasswordVO);
     }
 }

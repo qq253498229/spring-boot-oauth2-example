@@ -12,4 +12,6 @@ public interface UserMapper extends Mapper<User> {
     void initRoleByUserId(Integer id);
 
     List<String> showPersonalRole(String username);
+
+    void changePassword(String username, String password);
 }
