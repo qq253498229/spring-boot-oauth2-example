@@ -1,6 +1,7 @@
 package com.example.user;
 
 import com.example.config.TestResourceConfig;
+import com.example.user.vo.UserVO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

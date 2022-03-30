@@ -1,7 +1,7 @@
 package com.example.generator.mapper;
 
 import com.example.generator.model.User;
-import com.example.user.UserVO;
+import com.example.user.vo.UserVO;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;

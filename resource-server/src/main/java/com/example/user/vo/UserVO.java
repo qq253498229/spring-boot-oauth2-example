@@ -1,4 +1,4 @@
-package com.example.user;
+package com.example.user.vo;
 
 import com.example.generator.model.UserDetail;
 import lombok.Data;

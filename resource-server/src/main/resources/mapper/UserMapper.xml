@@ -11,7 +11,7 @@
         <result column="enable" jdbcType="BIT" property="enable"/>
     </resultMap>
     <resultMap extends="com.example.generator.mapper.UserDetailMapper.BaseResultMap"
-               id="UserDetailMap" type="com.example.user.UserVO">
+               id="UserDetailMap" type="com.example.user.vo.UserVO">
         <id column="id" jdbcType="INTEGER" property="id"/>
     </resultMap>
     <select id="selectAllFetchDetail" resultMap="UserDetailMap">

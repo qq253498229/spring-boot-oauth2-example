@@ -1,6 +1,7 @@
 package com.example.user;
 
 import com.example.generator.mapper.UserMapper;
+import com.example.user.vo.UserVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

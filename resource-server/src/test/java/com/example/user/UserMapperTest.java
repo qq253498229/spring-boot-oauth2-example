@@ -2,6 +2,7 @@ package com.example.user;
 
 import com.example.config.MyBatisConfig;
 import com.example.generator.mapper.UserMapper;
+import com.example.user.vo.UserVO;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
