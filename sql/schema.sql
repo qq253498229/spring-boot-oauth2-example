@@ -1,6 +1,8 @@
 create database if not exists `spring-boot-oauth2-example`;
 
-create table if not exists `t_client`
+use `spring-boot-oauth2-example`;
+
+create table `t_client`
 (
     id                             int auto_increment primary key,
     client_id                      varchar(100)                                                     not null,
@@ -25,7 +27,7 @@ create table t_role
     constraint t_role_name_uindex unique (name)
 ) comment '角色表';
 
-create table if not exists t_resource
+create table t_resource
 (
     id          int auto_increment primary key,
     name        varchar(40)  not null comment '资源名，唯一，英文，尽量短',
@@ -33,14 +35,14 @@ create table if not exists t_resource
     constraint t_resource_name_uindex unique (name)
 ) comment '资源表';
 
-create table if not exists r_role_resource
+create table r_role_resource
 (
     role_id     int not null,
     resource_id int not null,
     primary key (role_id, resource_id)
 ) comment '角色资源中间表';
 
-create table if not exists t_user
+create table t_user
 (
     id       int auto_increment primary key,
     username varchar(100)     not null comment '用户名',
@@ -49,10 +51,21 @@ create table if not exists t_user
     constraint t_user_username_uindex unique (username)
 ) comment '用户表';
 
-create table if not exists r_user_role
+create table r_user_role
 (
     user_id int not null,
     role_id int not null,
     primary key (user_id, role_id)
 ) comment '用户角色中间表';
+
+create table t_user_detail
+(
+    id      int auto_increment primary key,
+    user_id int          not null comment '关联t_user表id',
+    name    varchar(20)  null comment '用户姓名',
+    age     int          null comment '年龄',
+    email   varchar(100) null comment '电子邮箱',
+    gender  int          null comment '性别，1为男性，2为女性，3为其它'
+) comment '用户详情表';
+
 
