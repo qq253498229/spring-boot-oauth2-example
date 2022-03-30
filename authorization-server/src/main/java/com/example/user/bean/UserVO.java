@@ -1,4 +1,4 @@
-package com.example.user;
+package com.example.user.bean;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.example.generator.model.User;

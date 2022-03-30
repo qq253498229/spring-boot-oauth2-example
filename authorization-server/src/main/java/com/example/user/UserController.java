@@ -1,5 +1,6 @@
 package com.example.user;
 
+import com.example.user.bean.UserRegisterVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

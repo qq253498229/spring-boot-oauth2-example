@@ -1,4 +1,4 @@
-package com.example.user;
+package com.example.user.bean;
 
 import com.example.generator.model.Resource;
 import com.example.generator.model.Role;

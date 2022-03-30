@@ -1,5 +1,6 @@
-package com.example.user;
+package com.example.user.bean;
 
+import com.example.user.valid.ValidUsername;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

@@ -1,11 +1,11 @@
-package com.example.user;
+package com.example.config.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * 自定义注销相关处理逻辑
  */
-@Service
+@Component
 public class CustomLogoutHandler implements LogoutHandler, LogoutSuccessHandler {
     @Resource
     TokenStore tokenStore;

@@ -1,6 +1,5 @@
-package com.example.config;
+package com.example.config.security;
 
-import com.example.user.CustomLogoutHandler;
 import com.example.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

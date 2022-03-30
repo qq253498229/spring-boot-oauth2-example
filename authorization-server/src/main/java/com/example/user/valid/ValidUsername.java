@@ -1,4 +1,6 @@
-package com.example.user;
+package com.example.user.valid;
+
+import com.example.user.UserService;
 
 import javax.annotation.Resource;
 import javax.validation.Constraint;

@@ -2,6 +2,8 @@ package com.example.user;
 
 import com.example.generator.mapper.UserMapper;
 import com.example.generator.model.User;
+import com.example.user.bean.UserRegisterVO;
+import com.example.user.bean.UserVO;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -10,12 +10,12 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="enable" jdbcType="BIT" property="enable"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="UserVOResultMap" type="com.example.user.UserVO">
+    <resultMap extends="BaseResultMap" id="UserVOResultMap" type="com.example.user.bean.UserVO">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <collection columnPrefix="tr_" property="roleVOList" resultMap="RoleVOResultMap"/>
     </resultMap>
     <resultMap extends="com.example.generator.mapper.RoleMapper.BaseResultMap" id="RoleVOResultMap"
-               type="com.example.user.RoleVO">
+               type="com.example.user.bean.RoleVO">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <collection columnPrefix="t_" property="resourceList"
                     resultMap="com.example.generator.mapper.ResourceMapper.BaseResultMap"/>
