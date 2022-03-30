@@ -1,0 +1,9 @@
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+spring:
+  main:
+    allow-circular-references: true
+server:
+  error:
+    include-binding-errors: always
+    include-message: always

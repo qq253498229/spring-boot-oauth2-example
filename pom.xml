@@ -8,21 +8,11 @@
     <packaging>pom</packaging>
     <name>PARENT::ROOT</name>
 
-    <profiles>
-        <profile>
-            <id>single-service</id>
-            <modules>
-                <module>single-service/service</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>multiple-service</id>
-            <modules>
-                <module>multiple-service/authorization-service</module>
-                <module>multiple-service/resource-service</module>
-            </modules>
-        </profile>
-    </profiles>
+    <modules>
+        <module>single-service/service</module>
+        <module>authorization-server</module>
+        <module>resource-server</module>
+    </modules>
 
     <repositories>
         <repository>
