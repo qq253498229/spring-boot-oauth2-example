@@ -14,6 +14,9 @@ public class UserController {
     @Resource
     UserService userService;
 
+    /**
+     * 查看用户列表
+     */
     @GetMapping
     @PreAuthorize("hasAuthority('showUserList')")
     public List<UserVO> userList() {
