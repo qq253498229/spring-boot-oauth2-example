@@ -1,5 +1,6 @@
 package com.example.user;
 
+import cn.hutool.json.JSONUtil;
 import com.example.config.TestResourceConfig;
 import com.example.user.vo.UserVO;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -91,6 +94,48 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.age").value(12))
                 .andExpect(jsonPath("$.email").value("test@test.com"))
                 .andDo(print())
+        ;
+    }
+
+    @Test
+    @WithMockUser(authorities = {"resetUserPassword"})
+    void resetUserPassword() throws Exception {
+        String content = JSONUtil.createObj()
+                .set("username", "username")
+                .set("password", "password")
+                .toString();
+        mockMvc.perform(post("/user/resetUserPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isOk())
+                .andDo(print())
+        ;
+    }
+
+    @Test
+    void resetUserPassword_401() throws Exception {
+        String content = JSONUtil.createObj()
+                .set("username", "username")
+                .set("password", "password")
+                .toString();
+        mockMvc.perform(post("/user/resetUserPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
+    @Test
+    @WithMockUser
+    void resetUserPassword_403() throws Exception {
+        String content = JSONUtil.createObj()
+                .set("username", "username")
+                .set("password", "password")
+                .toString();
+        mockMvc.perform(post("/user/resetUserPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isForbidden())
         ;
     }
 }
