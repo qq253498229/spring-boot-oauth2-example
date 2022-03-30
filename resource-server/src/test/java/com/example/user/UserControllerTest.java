@@ -58,4 +58,38 @@ class UserControllerTest {
                 .andExpect(status().isForbidden())
         ;
     }
+
+    @Test
+    void showUserDetail_401() throws Exception {
+        mockMvc.perform(get("/user/details/{id}", 1))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
+    @Test
+    @WithMockUser
+    void showUserDetail_403() throws Exception {
+        mockMvc.perform(get("/user/details/{id}", 1))
+                .andExpect(status().isForbidden())
+        ;
+    }
+
+    @Test
+    @WithMockUser(authorities = {"showUserDetail"})
+    void showUserDetail() throws Exception {
+        UserVO userVO = new UserVO();
+        userVO.setId(1);
+        userVO.setUsername("test");
+        userVO.setAge(12);
+        userVO.setEmail("test@test.com");
+        Mockito.when(userService.showUserDetail(1)).thenReturn(userVO);
+        mockMvc.perform(get("/user/details/{id}", 1))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.username").value("test"))
+                .andExpect(jsonPath("$.age").value(12))
+                .andExpect(jsonPath("$.email").value("test@test.com"))
+                .andDo(print())
+        ;
+    }
 }

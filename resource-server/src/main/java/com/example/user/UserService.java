@@ -12,6 +12,10 @@ public class UserService {
     UserMapper userMapper;
 
     public List<UserVO> userList() {
-        return userMapper.selectAllFetchDetail();
+        return userMapper.selectAllFetchDetail(null);
+    }
+
+    public UserVO showUserDetail(Integer id) {
+        return userMapper.selectAllFetchDetail(id).get(0);
     }
 }

@@ -15,14 +15,20 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
     </resultMap>
     <select id="selectAllFetchDetail" resultMap="UserDetailMap">
-        select u.username,
-               tud.id,
-               tud.user_id,
-               tud.name,
-               tud.age,
-               tud.email,
-               tud.gender
+        select
+        u.username,
+        tud.id,
+        tud.user_id,
+        tud.name,
+        tud.age,
+        tud.email,
+        tud.gender
         from t_user u
-                 left join t_user_detail tud on u.id = tud.user_id
+        left join t_user_detail tud on u.id = tud.user_id
+        <where>
+            <if test="id != null and id != null">
+                and u.id = #{param1}
+            </if>
+        </where>
     </select>
 </mapper>
