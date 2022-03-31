@@ -16,24 +16,25 @@
         <i nz-icon nzType="home"></i>
         <span>主页</span>
       </li>
-      <li nz-submenu nzOpen nzTitle="用户管理" nzIcon="user">
+      <li nz-submenu nzOpen nzTitle="用户管理" nzIcon="user"
+          *ngIf="userInfo && userInfo.authorities && userInfo.authorities.length !== 0">
         <ul>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showPersonalRole')">
             <a>查看个人角色</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('updatePersonalDetail')">
             <a>编辑个人信息</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showUserList')">
             <a>查看用户列表</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showUserDetail')">
             <a>查看用户详情</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('resetUserPassword')">
             <a>重置用户密码</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showPersonalDetail')">
             <a>查看个人信息</a>
           </li>
         </ul>
@@ -50,14 +51,15 @@
             ></i>
         </span>
 
-        <div class="login-div" *ngIf="!userInfo || !userInfo.name">
+        <div class="login-div" *ngIf="!userInfo || !userInfo.user_name">
           <button nz-button nzType="primary">登录</button>
           &nbsp;
           <button nz-button nzType="primary" (click)="sso()">单点登录</button>
         </div>
 
-        <div class="login-div" *ngIf="!!userInfo && !!userInfo.name">
-          您好，{{userInfo.name}}！
+        <div class="login-div" *ngIf="!!userInfo && !!userInfo.user_name">
+          您好，{{userInfo.user_name}}！
+          <button nz-button nzType="primary" (click)="logout()">注销</button>
         </div>
 
       </div>
