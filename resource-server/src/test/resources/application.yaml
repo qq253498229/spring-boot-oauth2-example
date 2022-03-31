@@ -1,6 +1,6 @@
 logging:
   level:
-    com.example: info
+    com.example: debug
   #    org.apache.http: debug
   #    org.springframework.security: debug
   pattern:

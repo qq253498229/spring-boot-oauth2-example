@@ -16,8 +16,8 @@
     </resultMap>
     <select id="selectAllFetchDetail" resultMap="UserDetailMap">
         select
+        u.id,
         u.username,
-        tud.id,
         tud.user_id,
         tud.name,
         tud.age,
