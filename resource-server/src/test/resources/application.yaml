@@ -9,8 +9,7 @@ logging:
 
 ---
 spring:
-  profiles:
-    active: unit-test
+  profiles: unit-test
   sql:
     init:
       schema-locations: classpath*:sql/unit-test-schema.sql
