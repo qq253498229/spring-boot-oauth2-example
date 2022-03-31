@@ -5,7 +5,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NzMenuModule} from "ng-zorro-antd/menu";
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NzLayoutModule} from "ng-zorro-antd/layout";
-import {IconsProviderModule} from "../icons-provider.module";
+import {IconsProviderModule} from "./icons-provider.module";
 import {NzDividerModule} from "ng-zorro-antd/divider";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzTableModule} from "ng-zorro-antd/table";
