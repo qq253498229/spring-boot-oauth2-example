@@ -20,22 +20,22 @@
           *ngIf="userInfo && userInfo.authorities && userInfo.authorities.length !== 0">
         <ul>
           <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showPersonalRole')">
-            <a>查看个人角色</a>
-          </li>
-          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('updatePersonalDetail')">
-            <a>编辑个人信息</a>
-          </li>
-          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showUserList')">
-            <a>查看用户列表</a>
-          </li>
-          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showUserDetail')">
-            <a>查看用户详情</a>
-          </li>
-          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('resetUserPassword')">
-            <a>重置用户密码</a>
+            <a routerLink="/showPersonalRole">查看个人角色</a>
           </li>
           <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showPersonalDetail')">
-            <a>查看个人信息</a>
+            <a routerLink="/showPersonalDetail">查看个人信息</a>
+          </li>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('updatePersonalDetail')">
+            <a routerLink="/updatePersonalDetail">编辑个人信息</a>
+          </li>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showUserList')">
+            <a routerLink="/showUserList">查看用户列表</a>
+          </li>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('showUserDetail')">
+            <a routerLink="/showUserDetail">查看用户详情</a>
+          </li>
+          <li nz-menu-item nzMatchRouter *ngIf="matchAuthority('resetUserPassword')">
+            <a routerLink="/resetUserPassword">重置用户密码</a>
           </li>
         </ul>
       </li>
