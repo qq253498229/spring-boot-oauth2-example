@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.userInfo = this.service.user
-    console.log('r', this.userInfo)
     this.service.user$.subscribe(r => {
       this.userInfo = r
     })
