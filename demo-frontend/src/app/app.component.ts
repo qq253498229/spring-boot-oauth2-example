@@ -1,22 +1,23 @@
-import {Component} from '@angular/core';
-import {environment} from "../environments/environment";
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {CommonService} from "./shared/common/common.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  username = ''
+export class AppComponent implements OnInit {
+  isCollapsed = false;
 
-  constructor(private router: Router) {
+  userInfo: any
+
+  constructor(
+    private service: CommonService,
+  ) {
   }
 
-  authLogin() {
-    const currentUrl = this.router.url
-    const loginHost = `${environment.oauthUrl}/oauth/authorize`;
-    const redirectUrl = 'http://localhost:4200/login';
-    window.location.href = `${loginHost}?response_type=code&client_id=client&redirect_uri=${redirectUrl}&scope=app&state=${currentUrl}`;
+  ngOnInit(): void {
+    this.userInfo = this.service.getUserInfo()
+    console.log(this.userInfo)
   }
 }

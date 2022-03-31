@@ -1,4 +1,5 @@
-create database if not exists `spring-boot-oauth2-example`;
+# drop database `spring-boot-oauth2-example`;
+create database `spring-boot-oauth2-example`;
 
 use `spring-boot-oauth2-example`;
 
