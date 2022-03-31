@@ -17,7 +17,7 @@ values (1, 'user', '普通用户'),
 insert ignore into r_user_role (user_id, role_id)
 values (1, 1),
        (2, 1),
-       (2, 1)
+       (2, 2)
 ;
 # 资源表
 insert ignore into t_resource (id, name, description)
