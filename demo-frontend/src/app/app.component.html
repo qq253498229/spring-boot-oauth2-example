@@ -53,7 +53,7 @@
         <div class="login-div" *ngIf="!userInfo || !userInfo.name">
           <button nz-button nzType="primary">登录</button>
           &nbsp;
-          <button nz-button nzType="primary">单点登录</button>
+          <button nz-button nzType="primary" (click)="sso()">单点登录</button>
         </div>
 
         <div class="login-div" *ngIf="!!userInfo && !!userInfo.name">
