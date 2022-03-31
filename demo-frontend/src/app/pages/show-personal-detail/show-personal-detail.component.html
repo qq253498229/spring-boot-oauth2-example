@@ -1,1 +1,19 @@
-<p>show-personal-detail works!</p>
+<h1>您的个人信息</h1>
+<table>
+  <tr>
+    <td>名字:</td>
+    <td>{{details.name}}</td>
+  </tr>
+  <tr>
+    <td>年龄:</td>
+    <td>{{details.age}}</td>
+  </tr>
+  <tr>
+    <td>电子邮箱:</td>
+    <td>{{details.email}}</td>
+  </tr>
+  <tr>
+    <td>性别:</td>
+    <td>{{details.gender | gender}}</td>
+  </tr>
+</table>

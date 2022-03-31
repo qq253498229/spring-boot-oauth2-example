@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-show-personal-detail',
@@ -6,10 +7,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./show-personal-detail.component.scss']
 })
 export class ShowPersonalDetailComponent implements OnInit {
+  details: any = {
+    name: undefined,
+    age: undefined,
+    email: undefined,
+    gender: undefined,
+  }
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+  ) {
+  }
 
   ngOnInit(): void {
+    this.http.get(`/user/showPersonalDetail`).subscribe(r => {
+      console.log('r', r)
+      this.details = r
+    })
   }
 
 }
