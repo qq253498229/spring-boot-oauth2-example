@@ -12,6 +12,7 @@ import {NzTableModule} from "ng-zorro-antd/table";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzMessageModule} from "ng-zorro-antd/message";
+import {GenderPipe} from "./pipe/gender.pipe";
 
 const THIRD_MODULES: any[] = [
   FormsModule,
@@ -32,7 +33,9 @@ const NG_ZORRO_MODULES: any[] = [
 ];
 const COMPONENTS: any[] = [];
 const DIRECTIVES: any[] = [];
-const PIPES: any[] = [];
+const PIPES: any[] = [
+  GenderPipe,
+];
 
 @NgModule({
   declarations: [
