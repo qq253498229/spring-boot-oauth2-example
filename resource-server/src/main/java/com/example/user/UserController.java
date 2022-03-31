@@ -62,4 +62,13 @@ public class UserController {
         String username = principal.getName();
         return userService.showPersonalDetail(username);
     }
+
+    /**
+     * 编辑个人信息
+     */
+    @PostMapping("/user/updatePersonalDetail")
+    @PreAuthorize("hasAuthority('updatePersonalDetail')")
+    public void updatePersonalDetail(@RequestBody @Validated UserDetailVO userDetailVO) {
+        userService.updatePersonalDetail(userDetailVO);
+    }
 }

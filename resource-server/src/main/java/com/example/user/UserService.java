@@ -28,12 +28,12 @@ public class UserService {
     }
 
     public void resetUserPassword(ResetUserPasswordVO resetUserPasswordVO) {
-        User user = getUserByUsername(resetUserPasswordVO.getPassword());
+        User user = getUserByUsername(resetUserPasswordVO.getUsername());
         user.setPassword(passwordEncoder.encode(resetUserPasswordVO.getPassword()));
         userMapper.updateByPrimaryKeySelective(user);
     }
 
-    private User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Example example = new Example(User.class);
         example.createCriteria().andEqualTo("username", username);
         return userMapper.selectOneByExample(example);
@@ -45,5 +45,9 @@ public class UserService {
 
     public UserDetailVO showPersonalDetail(String username) {
         return userMapper.showPersonalDetail(username);
+    }
+
+    public void updatePersonalDetail(UserDetailVO userDetailVO) {
+        userMapper.updatePersonalDetail(userDetailVO);
     }
 }

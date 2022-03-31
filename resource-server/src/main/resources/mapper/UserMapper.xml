@@ -59,4 +59,13 @@
                  left join t_user_detail tud on u.id = tud.user_id
         where u.username = #{username}
     </select>
+    <select id="updatePersonalDetail">
+        insert into t_user_detail
+            (user_id, name, age, email, gender)
+        values (#{item.userId}, #{item.name}, #{item.age}, #{item.email}, #{item.gender})
+        on duplicate key update name   = #{item.name},
+                                age    = #{item.age},
+                                email  = #{item.email},
+                                gender = #{item.gender}
+    </select>
 </mapper>
