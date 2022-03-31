@@ -3,6 +3,7 @@ package com.example.user;
 import com.example.generator.mapper.UserMapper;
 import com.example.generator.model.User;
 import com.example.user.vo.ResetUserPasswordVO;
+import com.example.user.vo.UserDetailVO;
 import com.example.user.vo.UserVO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,9 @@ public class UserService {
 
     public List<String> showPersonalRole(String username) {
         return userMapper.showPersonalRole(username);
+    }
+
+    public UserDetailVO showPersonalDetail(String username) {
+        return userMapper.showPersonalDetail(username);
     }
 }

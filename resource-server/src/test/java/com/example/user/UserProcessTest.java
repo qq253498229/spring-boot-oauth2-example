@@ -136,4 +136,40 @@ public class UserProcessTest {
                 .andDo(print())
         ;
     }
+
+    /**
+     * {@link UserController#showPersonalDetail(Principal)}
+     */
+    @Test
+    @WithMockUser(username = "user", authorities = {"showPersonalDetail"})
+    void showPersonalDetail() throws Exception {
+        mockMvc.perform(get("/user/showPersonalDetail"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.userId").value(1))
+                .andExpect(jsonPath("$.name").value("测试用户"))
+                .andExpect(jsonPath("$.age").value(12))
+                .andExpect(jsonPath("$.email").value("test@test.com"))
+                .andExpect(jsonPath("$.gender").value(1))
+                .andDo(print())
+        ;
+    }
+
+    /**
+     * {@link UserController#showPersonalDetail(Principal)}
+     */
+    @Test
+    @WithMockUser(username = "admin", authorities = {"showPersonalDetail"})
+    void showPersonalDetail_1() throws Exception {
+        mockMvc.perform(get("/user/showPersonalDetail"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.userId").value(2))
+                .andExpect(jsonPath("$.name").value("管理员用户"))
+                .andExpect(jsonPath("$.age").value(66))
+                .andExpect(jsonPath("$.email").value("admin@test.com"))
+                .andExpect(jsonPath("$.gender").value(2))
+                .andDo(print())
+        ;
+    }
 }

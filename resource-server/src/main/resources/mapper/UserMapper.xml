@@ -43,4 +43,20 @@
             </if>
         </where>
     </select>
+    <resultMap extends="com.example.generator.mapper.UserDetailMapper.BaseResultMap" id="UserDetailVOMap"
+               type="com.example.user.vo.UserDetailVO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+    </resultMap>
+    <select id="showPersonalDetail" resultMap="UserDetailVOMap">
+        select u.id,
+               u.username,
+               tud.user_id,
+               tud.name,
+               tud.age,
+               tud.email,
+               tud.gender
+        from t_user u
+                 left join t_user_detail tud on u.id = tud.user_id
+        where u.username = #{username}
+    </select>
 </mapper>

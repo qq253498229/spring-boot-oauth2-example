@@ -1,6 +1,7 @@
 package com.example.user;
 
 import com.example.user.vo.ResetUserPasswordVO;
+import com.example.user.vo.UserDetailVO;
 import com.example.user.vo.UserVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -50,5 +51,15 @@ public class UserController {
     public List<String> showPersonalRole(Principal principal) {
         String username = principal.getName();
         return userService.showPersonalRole(username);
+    }
+
+    /**
+     * 查看个人信息
+     */
+    @GetMapping("/user/showPersonalDetail")
+    @PreAuthorize("hasAuthority('showPersonalDetail')")
+    public UserDetailVO showPersonalDetail(Principal principal) {
+        String username = principal.getName();
+        return userService.showPersonalDetail(username);
     }
 }
