@@ -126,13 +126,29 @@ public class UserProcessTest {
      * {@link UserController#showPersonalRole(Principal)}
      */
     @Test
-    @WithMockUser(authorities = {"showPersonalRole"})
+    @WithMockUser(username = "user", authorities = {"showPersonalRole"})
     void showPersonalRole() throws Exception {
         mockMvc.perform(get("/user/showPersonalRole"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]").value("普通用户"))
+                .andDo(print())
+        ;
+    }
+
+    /**
+     * {@link UserController#showPersonalRole(Principal)}
+     */
+    @Test
+    @WithMockUser(username = "admin", authorities = {"showPersonalRole"})
+    void showPersonalRole_1() throws Exception {
+        mockMvc.perform(get("/user/showPersonalRole"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0]").value("普通用户"))
+                .andExpect(jsonPath("$[1]").value("系统管理员"))
                 .andDo(print())
         ;
     }
