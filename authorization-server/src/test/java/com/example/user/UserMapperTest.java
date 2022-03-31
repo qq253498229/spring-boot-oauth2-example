@@ -29,7 +29,7 @@ public class UserMapperTest {
         assertEquals(allFetchRoleAndResource.size(), 2);
         assertEquals(allFetchRoleAndResource.get(0).getRoleVOList().size(), 1);
         assertEquals(allFetchRoleAndResource.get(1).getRoleVOList().size(), 2);
-        assertEquals(allFetchRoleAndResource.get(0).getAuthorities().size(), 2);
-        assertEquals(allFetchRoleAndResource.get(1).getAuthorities().size(), 5);
+        assertEquals(allFetchRoleAndResource.get(0).getAuthorities().size(), 3);
+        assertEquals(allFetchRoleAndResource.get(1).getAuthorities().size(), 6);
     }
 }

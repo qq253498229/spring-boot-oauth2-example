@@ -17,12 +17,14 @@ values (1, 'showPersonalRole', '查看个人角色'),
        (2, 'updatePersonalDetail', '编辑个人信息'),
        (3, 'showUserList', '查看用户列表'),
        (4, 'showUserDetail', '查看用户详情'),
-       (5, 'resetUserPassword', '重置用户密码')
+       (5, 'resetUserPassword', '重置用户密码'),
+       (6, 'showPersonalDetail', '查看个人信息')
 ;
 insert into r_role_resource (role_id, resource_id)
 values (1, 1),
        (1, 2),
        (2, 3),
        (2, 4),
-       (2, 5)
+       (2, 5),
+       (1, 6)
 ;

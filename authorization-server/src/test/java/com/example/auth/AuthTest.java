@@ -67,7 +67,7 @@ public class AuthTest {
         assertNotNull(body1);
         assertEquals(TEST_USERNAME, body1.getStr("user_name"));
         assertTrue(body1.getBool("active"));
-        assertEquals(2, body1.getJSONArray("authorities").size());
+        assertEquals(3, body1.getJSONArray("authorities").size());
         assertEquals(TEST_CLIENT, body1.getStr("client_id"));
         assertEquals(1, body1.getJSONArray("scope").size());
         assertNotNull(body1.getInt("exp"));
@@ -298,7 +298,7 @@ public class AuthTest {
         assertNotNull(body1);
         assertEquals(TEST_USERNAME, body1.getStr("user_name"));
         assertTrue(body1.getBool("active"));
-        assertEquals(2, body1.getJSONArray("authorities").size());
+        assertEquals(3, body1.getJSONArray("authorities").size());
         assertEquals(TEST_CLIENT, body1.getStr("client_id"));
         assertEquals(1, body1.getJSONArray("scope").size());
         assertNotNull(body1.getInt("exp"));
