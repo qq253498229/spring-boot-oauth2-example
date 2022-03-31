@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -39,5 +40,15 @@ public class UserController {
     @PreAuthorize("hasAuthority('resetUserPassword')")
     public void resetUserPassword(@RequestBody @Validated ResetUserPasswordVO resetUserPasswordVO) {
         userService.resetUserPassword(resetUserPasswordVO);
+    }
+
+    /**
+     * 查看个人角色
+     */
+    @GetMapping("/user/showPersonalRole")
+    @PreAuthorize("hasAuthority('showPersonalRole')")
+    public List<String> showPersonalRole(Principal principal) {
+        String username = principal.getName();
+        return userService.showPersonalRole(username);
     }
 }

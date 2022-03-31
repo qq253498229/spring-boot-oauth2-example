@@ -33,4 +33,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(resetUserPasswordVO.getPassword()));
         userMapper.updateByPrimaryKeySelective(user);
     }
+
+    public List<String> showPersonalRole(String username) {
+        return userMapper.showPersonalRole(username);
+    }
 }

@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
     List<UserVO> selectAllFetchDetail(Integer id);
+
+    List<String> showPersonalRole(String username);
 }

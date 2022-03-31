@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -119,5 +120,20 @@ public class UserProcessTest {
         ;
         User user1 = userMapper.selectByPrimaryKey(1);
         assertTrue(passwordEncoder.matches("user1", user1.getPassword()));
+    }
+
+    /**
+     * {@link UserController#showPersonalRole(Principal)}
+     */
+    @Test
+    @WithMockUser(authorities = {"showPersonalRole"})
+    void showPersonalRole() throws Exception {
+        mockMvc.perform(get("/user/showPersonalRole"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0]").value("普通用户"))
+                .andDo(print())
+        ;
     }
 }

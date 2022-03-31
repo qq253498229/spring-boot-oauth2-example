@@ -18,3 +18,18 @@ create table t_user_detail
     email   varchar(100) null comment '电子邮箱',
     gender  int          null comment '性别，1为男性，2为女性，3为其它'
 );
+
+create table t_role
+(
+    id          int auto_increment primary key,
+    name        varchar(200) not null comment '角色名',
+    description varchar(200) not null comment '角色描述',
+    constraint t_role_name_uindex unique (name)
+);
+
+create table r_user_role
+(
+    user_id int not null,
+    role_id int not null,
+    primary key (user_id, role_id)
+);
