@@ -37,3 +37,6 @@ values (1, 1),
        (2, 5),
        (1, 6)
 ;
+insert into t_user_detail (id, user_id, name, age, email, gender)
+values (1, 1, '测试用户', 12, 'test@test.com', 1),
+       (2, 2, '管理员用户', 66, 'admin@test.com', 2);
