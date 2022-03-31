@@ -28,11 +28,15 @@ public class UserService {
     }
 
     public void resetUserPassword(ResetUserPasswordVO resetUserPasswordVO) {
-        Example example = new Example(User.class);
-        example.createCriteria().andEqualTo("username", resetUserPasswordVO.getUsername());
-        User user = userMapper.selectOneByExample(example);
+        User user = getUserByUsername(resetUserPasswordVO.getPassword());
         user.setPassword(passwordEncoder.encode(resetUserPasswordVO.getPassword()));
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    private User getUserByUsername(String username) {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("username", username);
+        return userMapper.selectOneByExample(example);
     }
 
     public List<String> showPersonalRole(String username) {
