@@ -9,7 +9,6 @@
     <name>PARENT::ROOT</name>
 
     <modules>
-        <module>single-service/service</module>
         <module>authorization-server</module>
         <module>resource-server</module>
     </modules>
