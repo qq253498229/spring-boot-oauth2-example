@@ -16,7 +16,8 @@ create table t_user_detail
     name    varchar(20)  null comment '用户姓名',
     age     int          null comment '年龄',
     email   varchar(100) null comment '电子邮箱',
-    gender  int          null comment '性别，1为男性，2为女性，3为其它'
+    gender  int          null comment '性别，1为男性，2为女性，3为其它',
+    constraint t_user_detail_user_id_uindex unique (user_id)
 );
 
 create table t_role
