@@ -1,6 +1,7 @@
 package com.example.user;
 
 import cn.hutool.json.JSONUtil;
+import com.example.config.ResourceConfig;
 import com.example.config.TestResourceConfig;
 import com.example.user.vo.UserVO;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @ActiveProfiles("unit-test")
-@Import(TestResourceConfig.class)
+@Import({ResourceConfig.class, TestResourceConfig.class})
 class UserControllerTest {
     @Resource
     MockMvc mockMvc;
