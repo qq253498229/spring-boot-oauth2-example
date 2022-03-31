@@ -18,6 +18,8 @@ import {ResetUserPasswordComponent} from './pages/reset-user-password/reset-user
 import {ShowPersonalDetailComponent} from './pages/show-personal-detail/show-personal-detail.component';
 import {AuthGuard} from "./shared/guard/auth.guard";
 import {LoginComponent} from './pages/login/login.component';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {AuthInterceptor} from "./shared/common/auth.interceptor";
 
 registerLocaleData(zh);
 
@@ -51,7 +53,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     SharedModule,
   ],
-  providers: [{provide: NZ_I18N, useValue: zh_CN}],
+  providers: [
+    {provide: NZ_I18N, useValue: zh_CN},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
