@@ -20,7 +20,6 @@ import java.util.Arrays;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +44,6 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andDo(print())
         ;
     }
 
@@ -94,7 +92,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.username").value("test"))
                 .andExpect(jsonPath("$.age").value(12))
                 .andExpect(jsonPath("$.email").value("test@test.com"))
-                .andDo(print())
         ;
     }
 
@@ -109,7 +106,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isOk())
-                .andDo(print())
         ;
     }
 

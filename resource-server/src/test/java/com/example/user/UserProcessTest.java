@@ -22,7 +22,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +65,6 @@ public class UserProcessTest {
                 .andExpect(jsonPath("$[1].email").value("admin@test.com"))
                 .andExpect(jsonPath("$[1].gender").value(2))
                 .andExpect(jsonPath("$[1].username").value("admin"))
-                .andDo(print())
         ;
     }
 
@@ -113,10 +111,9 @@ public class UserProcessTest {
                 .set("password", "user1")
                 .toString();
         mockMvc.perform(post("/user/resetUserPassword")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content)
-                ).andExpect(status().isOk())
-                .andDo(print())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        ).andExpect(status().isOk())
         ;
         User user1 = userMapper.selectByPrimaryKey(1);
         assertTrue(passwordEncoder.matches("user1", user1.getPassword()));
@@ -133,7 +130,6 @@ public class UserProcessTest {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]").value("普通用户"))
-                .andDo(print())
         ;
     }
 
@@ -149,7 +145,6 @@ public class UserProcessTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0]").value("普通用户"))
                 .andExpect(jsonPath("$[1]").value("系统管理员"))
-                .andDo(print())
         ;
     }
 
@@ -167,7 +162,6 @@ public class UserProcessTest {
                 .andExpect(jsonPath("$.age").value(12))
                 .andExpect(jsonPath("$.email").value("test@test.com"))
                 .andExpect(jsonPath("$.gender").value(1))
-                .andDo(print())
         ;
     }
 
@@ -185,7 +179,6 @@ public class UserProcessTest {
                 .andExpect(jsonPath("$.age").value(66))
                 .andExpect(jsonPath("$.email").value("admin@test.com"))
                 .andExpect(jsonPath("$.gender").value(2))
-                .andDo(print())
         ;
     }
 }
