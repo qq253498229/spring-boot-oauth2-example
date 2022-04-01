@@ -22,8 +22,7 @@ export class AuthGuard implements CanActivateChild {
       this.router.navigate(['/index'])
       return false
     }
-    let expired = user.exp * 1000 < new Date().getTime()
-    if (expired) {
+    if (this.service.expired) {
       return this.service.refreshToken().pipe(map(r => {
         if (r) {
           return true

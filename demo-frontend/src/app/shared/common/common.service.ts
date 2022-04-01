@@ -27,6 +27,11 @@ export class CommonService {
     this.userSource.next(user)
   }
 
+  get expired() {
+    // 提前10秒，避免踩点过期
+    return this.user.exp * 1000 - 10000 < new Date().getTime()
+  }
+
   get token() {
     return JSON.parse(localStorage.getItem('token') || '{}')
   }
