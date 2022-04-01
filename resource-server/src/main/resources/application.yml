@@ -13,3 +13,6 @@ spring:
       FAIL_ON_EMPTY_BEANS: false
 server:
   port: 8081
+  error:
+    include-binding-errors: always
+    include-message: always
