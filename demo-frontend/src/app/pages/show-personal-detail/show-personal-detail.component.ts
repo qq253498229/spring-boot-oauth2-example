@@ -21,7 +21,6 @@ export class ShowPersonalDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get(`/user/showPersonalDetail`).subscribe(r => {
-      console.log('r', r)
       this.details = r
     })
   }
