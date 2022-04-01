@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,9 @@ export class CommonService {
   token$ = this.tokenSource.asObservable()
   user$ = this.userSource.asObservable()
 
-  constructor() {
+  constructor(
+    private message: NzMessageService,
+  ) {
   }
 
   get user() {
@@ -33,5 +36,13 @@ export class CommonService {
     }
     localStorage.setItem('token', JSON.stringify(token))
     this.tokenSource.next(token)
+  }
+
+  success(message = `保存成功，正在返回列表`) {
+    this.message.success(message)
+  }
+
+  error(message = `保存失败，请联系管理员`) {
+    this.message.error(message)
   }
 }
