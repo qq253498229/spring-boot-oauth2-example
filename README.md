@@ -26,6 +26,16 @@
 - [x] 查看用户详情
 - [x] 重置用户密码
 
+### 截图展示
+
+![注册用户](docs/img/register.png)
+
+![修改密码](docs/img/changepassword.png)
+
+![用户列表](docs/img/userlist.png)
+
+![用户详情](docs/img/userdetail.png)
+
 ## 参考文档
 
 https://projects.spring.io/spring-security-oauth/docs/oauth2.html
