@@ -68,7 +68,8 @@ public class UserController {
      */
     @PostMapping("/user/updatePersonalDetail")
     @PreAuthorize("hasAuthority('updatePersonalDetail')")
-    public void updatePersonalDetail(@RequestBody @Validated UserDetailVO userDetailVO) {
-        userService.updatePersonalDetail(userDetailVO);
+    public void updatePersonalDetail(@RequestBody UserDetailVO userDetailVO, Principal principal) {
+        String username = principal.getName();
+        userService.updatePersonalDetail(userDetailVO, username);
     }
 }

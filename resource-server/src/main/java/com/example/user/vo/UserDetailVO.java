@@ -1,9 +1,6 @@
 package com.example.user.vo;
 
-import com.example.user.valid.ValidUserId;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 @Data
 public class UserDetailVO {
@@ -11,8 +8,6 @@ public class UserDetailVO {
     /**
      * 关联t_user表id
      */
-    @NotNull(message = "用户id不能为空")
-    @ValidUserId
     private Integer userId;
 
     /**

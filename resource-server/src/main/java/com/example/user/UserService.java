@@ -47,7 +47,9 @@ public class UserService {
         return userMapper.showPersonalDetail(username);
     }
 
-    public void updatePersonalDetail(UserDetailVO userDetailVO) {
+    public void updatePersonalDetail(UserDetailVO userDetailVO, String username) {
+        User user = getUserByUsername(username);
+        userDetailVO.setUserId(user.getId());
         userMapper.updatePersonalDetail(userDetailVO);
     }
 }
