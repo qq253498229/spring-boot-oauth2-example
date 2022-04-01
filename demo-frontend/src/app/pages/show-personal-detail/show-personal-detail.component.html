@@ -1,19 +1,35 @@
 <h1>您的个人信息</h1>
-<table>
-  <tr>
-    <td>名字:</td>
-    <td>{{details.name}}</td>
-  </tr>
-  <tr>
-    <td>年龄:</td>
-    <td>{{details.age}}</td>
-  </tr>
-  <tr>
-    <td>电子邮箱:</td>
-    <td>{{details.email}}</td>
-  </tr>
-  <tr>
-    <td>性别:</td>
-    <td>{{details.gender | gender}}</td>
-  </tr>
-</table>
+<form nz-form>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">姓名</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input [(ngModel)]="details.name" id="name" name="name" disabled/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="age">年龄</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input [(ngModel)]="details.age" id="age" type="number" name="age" disabled/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">电子邮箱</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input [(ngModel)]="details.email" id="email" name="email" disabled/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="gender">性别</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select [(ngModel)]="details.gender" name="gender" disabled>
+        <nz-option [nzValue]="1" nzLabel="男"></nz-option>
+        <nz-option [nzValue]="2" nzLabel="女"></nz-option>
+        <nz-option [nzValue]="3" nzLabel="其它"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
