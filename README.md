@@ -26,7 +26,7 @@
 - [x] 查看用户详情
 - [x] 重置用户密码
 
-### 截图展示
+## 截图展示
 
 ![注册用户](docs/img/register.png)
 
@@ -35,6 +35,15 @@
 ![用户列表](docs/img/userlist.png)
 
 ![用户详情](docs/img/userdetail.png)
+
+## 文件结构
+
+- authorization-server: 授权服务器（权限中心）
+- resource-server: 资源服务器（客户端，负责具体业务）
+- sql: 数据库文件
+    - schema.sql: 表结构
+    - initial-data.sql: 初始化数据
+- demo-frontend: 前端项目
 
 ## 参考文档
 
