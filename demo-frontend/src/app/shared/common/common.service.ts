@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {map, Observable, Subject} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class CommonService {
   constructor(
     private message: NzMessageService,
     private http: HttpClient,
+    private router: Router,
   ) {
   }
 
@@ -30,6 +32,16 @@ export class CommonService {
   get expired() {
     // 提前10秒，避免踩点过期
     return this.user.exp * 1000 - 10000 < new Date().getTime()
+  }
+
+  clearAuth() {
+    this.user = null
+    this.token = null
+  }
+
+  noAuth() {
+    this.clearAuth()
+    this.router.navigate(['/index'])
   }
 
   get token() {

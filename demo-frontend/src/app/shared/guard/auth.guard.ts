@@ -32,7 +32,8 @@ export class AuthGuard implements CanActivateChild {
           return false
         }
       }), catchError(e => {
-        this.service.error(`登录状态刷新失败`)
+        this.service.error(`登录状态刷新失败，请重新登录`)
+        this.service.noAuth()
         return throwError(`error: ${e.error}`)
       }))
     }

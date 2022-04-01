@@ -40,8 +40,7 @@ export class AppComponent implements OnInit {
   logout() {
     const redirectUri = "http://localhost:4200"
     const token = this.service.token['access_token']
-    this.service.user = null
-    this.service.token = null
+    this.service.clearAuth()
     window.location.href = `${environment.oauthUrl}/oauth/logout?token=${token}&redirect=${redirectUri}`
   }
 
