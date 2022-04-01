@@ -1,0 +1,39 @@
+<h1>注册用户</h1>
+
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="username">用户名</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入用户名!">
+      <input nz-input formControlName="username" id="username"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入密码!">
+      <input nz-input type="password" id="password" formControlName="password"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="passwordAgain" nzRequired>确认密码</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+      <input nz-input type="password" formControlName="passwordAgain" id="passwordAgain"/>
+      <ng-template #errorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">请输入确认密码!</ng-container>
+        <ng-container *ngIf="control.hasError('confirm')">两次密码不相同!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <label nz-checkbox formControlName="agree">
+        <span>我同意<a (click)="agreement()">协议</a></span>
+      </label>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button nz-button nzType="primary" [disabled]="validateForm.invalid">注册</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

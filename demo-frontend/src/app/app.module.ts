@@ -20,6 +20,7 @@ import {AuthGuard} from "./shared/guard/auth.guard";
 import {LoginComponent} from './pages/login/login.component';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthInterceptor} from "./shared/common/auth.interceptor";
+import {RegisterComponent} from './pages/register/register.component';
 
 registerLocaleData(zh);
 
@@ -38,6 +39,7 @@ const routes: Routes = [
       {path: 'showPersonalDetail', component: ShowPersonalDetailComponent},
     ]
   },
+  {path: 'register', component: RegisterComponent},
 ]
 
 @NgModule({
@@ -51,6 +53,7 @@ const routes: Routes = [
     ResetUserPasswordComponent,
     ShowPersonalDetailComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
