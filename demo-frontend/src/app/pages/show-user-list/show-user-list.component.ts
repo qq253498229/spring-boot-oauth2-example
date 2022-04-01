@@ -30,6 +30,6 @@ export class ShowUserListComponent implements OnInit {
   }
 
   changePassword(data: any) {
-    console.log(data)
+    this.router.navigate(['/resetUserPassword'], {queryParams: {id: data.id}})
   }
 }
