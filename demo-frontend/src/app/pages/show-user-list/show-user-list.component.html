@@ -2,6 +2,7 @@
 <nz-table #basicTable [nzData]="dataSet">
   <thead>
   <tr>
+    <th>用户名</th>
     <th>姓名</th>
     <th>年龄</th>
     <th>性别</th>
@@ -11,6 +12,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let data of basicTable.data">
+    <td>{{data.username}}</td>
     <td>{{data.name}}</td>
     <td>{{data.age}}</td>
     <td>{{data.gender | gender}}</td>
