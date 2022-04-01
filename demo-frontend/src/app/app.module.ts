@@ -26,13 +26,18 @@ registerLocaleData(zh);
 const routes: Routes = [
   {path: '', redirectTo: 'index', pathMatch: 'full'},
   {path: 'index', component: IndexComponent},
-  {path: 'login', canActivate: [LoginGuard], component: LoginComponent},
-  {path: 'showPersonalRole', canActivate: [AuthGuard], component: ShowPersonalRoleComponent},
-  {path: 'updatePersonalDetail', canActivate: [AuthGuard], component: UpdatePersonalDetailComponent},
-  {path: 'showUserList', canActivate: [AuthGuard], component: ShowUserListComponent},
-  {path: 'showUserDetail', canActivate: [AuthGuard], component: ShowUserDetailComponent},
-  {path: 'resetUserPassword', canActivate: [AuthGuard], component: ResetUserPasswordComponent},
-  {path: 'showPersonalDetail', canActivate: [AuthGuard], component: ShowPersonalDetailComponent},
+  {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
+  {
+    path: '',
+    canActivateChild: [AuthGuard], children: [
+      {path: 'showPersonalRole', component: ShowPersonalRoleComponent},
+      {path: 'updatePersonalDetail', component: UpdatePersonalDetailComponent},
+      {path: 'showUserList', component: ShowUserListComponent},
+      {path: 'showUserDetail', component: ShowUserDetailComponent},
+      {path: 'resetUserPassword', component: ResetUserPasswordComponent},
+      {path: 'showPersonalDetail', component: ShowPersonalDetailComponent},
+    ]
+  },
 ]
 
 @NgModule({

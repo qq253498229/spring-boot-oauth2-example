@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Subject} from "rxjs";
+import {map, Observable, Subject} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class CommonService {
 
   constructor(
     private message: NzMessageService,
+    private http: HttpClient,
   ) {
   }
 
@@ -44,5 +46,21 @@ export class CommonService {
 
   error(message = `保存失败，请联系管理员`) {
     this.message.error(message)
+  }
+
+  info(message = `警告`) {
+    this.message.info(message)
+  }
+
+  refreshToken(): Observable<boolean> {
+    let param = `grant_type=refresh_token&refresh_token=${this.token.refresh_token}`
+    let url = `/oauth/token?${param}`
+    let headers = {
+      'Authorization': `Basic ${btoa('client:secret')}`
+    }
+    return this.http.post(url, null, {headers}).pipe(map(r => {
+      this.token = r
+      return true
+    }))
   }
 }
