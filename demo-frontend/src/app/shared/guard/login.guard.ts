@@ -31,6 +31,7 @@ export class LoginGuard implements CanActivate, CanActivateChild {
     }
     return this.http.post(url, null, {headers}).pipe(map(r => {
       this.service.token = r
+      this.service.success(`登录成功`)
       if (!!state) {
         this.router.navigate([state])
       } else {

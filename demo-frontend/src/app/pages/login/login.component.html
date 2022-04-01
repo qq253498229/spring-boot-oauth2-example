@@ -1,1 +1,22 @@
-<p>login works!</p>
+<h1>登录</h1>
+<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-control nzErrorTip="请输入用户名!">
+      <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="username" placeholder="用户名"/>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="请输入密码!">
+      <nz-input-group nzPrefixIcon="lock">
+        <input type="password" nz-input formControlName="password" placeholder="密码"/>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'"
+          [disabled]="validateForm.invalid">登录
+  </button>
+  或者
+  <a>去注册</a>
+</form>

@@ -52,7 +52,7 @@
         </span>
 
         <div class="login-div" *ngIf="!userInfo || !userInfo.user_name">
-          <button nz-button nzType="primary">登录</button>
+          <button nz-button nzType="primary" routerLink="/login">登录</button>
           &nbsp;
           <button nz-button nzType="primary" (click)="sso()">单点登录</button>
         </div>

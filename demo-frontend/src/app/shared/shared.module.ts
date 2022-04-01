@@ -13,6 +13,7 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzMessageModule} from "ng-zorro-antd/message";
 import {GenderPipe} from "./pipe/gender.pipe";
+import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 
 const THIRD_MODULES: any[] = [
   FormsModule,
@@ -30,6 +31,7 @@ const NG_ZORRO_MODULES: any[] = [
   NzInputModule,
   NzSelectModule,
   NzMessageModule,
+  NzCheckboxModule,
 ];
 const COMPONENTS: any[] = [];
 const DIRECTIVES: any[] = [];

@@ -80,4 +80,13 @@ export class CommonService {
       return true
     }))
   }
+
+  login(username: string, password: string) {
+    let param = `grant_type=password&username=${username}&password=${password}`
+    let url = `/oauth/token?${param}`
+    let headers = {
+      'Authorization': `Basic ${btoa('client:secret')}`
+    }
+    return this.http.post(url, null, {headers})
+  }
 }
