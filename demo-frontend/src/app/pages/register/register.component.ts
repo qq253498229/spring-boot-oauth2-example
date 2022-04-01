@@ -47,10 +47,6 @@ export class RegisterComponent implements OnInit {
       this.service.info(`请阅读并同意协议`)
       return
     }
-    this.http.post(`/oauth/register`, this.validateForm.getRawValue()).subscribe(() => {
-      this.service.success(`注册成功，即将跳转到登录页面`)
-      this.router.navigate(['/login'])
-    })
     this.http.post(`/oauth/register`, this.validateForm.getRawValue()).subscribe({
       next: () => {
         this.service.success(`注册成功，即将跳转到登录页面`)
