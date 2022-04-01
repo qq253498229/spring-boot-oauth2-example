@@ -1,1 +1,23 @@
-<p>show-user-list works!</p>
+<h1>用户列表</h1>
+<nz-table #basicTable [nzData]="dataSet">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Address</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of basicTable.data">
+    <td>{{data.name}}</td>
+    <td>{{data.age}}</td>
+    <td>{{data.email}}</td>
+    <td>
+      <a (click)="details(data)">查看详情</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a (click)="changePassword(data)">修改密码</a>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
