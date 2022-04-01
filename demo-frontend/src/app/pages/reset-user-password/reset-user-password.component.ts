@@ -20,6 +20,7 @@ export class ResetUserPasswordComponent implements OnInit {
     private fb: FormBuilder,
   ) {
     this.validateForm = this.fb.group({
+      username: [{value: null, disabled: true}],
       password: [null, [Validators.required]],
       passwordAgain: [null, [Validators.required, this.confirmationValidator]],
     })
@@ -30,6 +31,10 @@ export class ResetUserPasswordComponent implements OnInit {
       if (!r['id']) {
         this.service.info(`请先选择用户`)
         this.router.navigate(['/showUserList'])
+      } else {
+        this.http.get<any>(`/user/details/${r['id']}`).subscribe(r1 => {
+          this.validateForm.patchValue({username: r1['username']})
+        })
       }
     })
   }
@@ -48,6 +53,9 @@ export class ResetUserPasswordComponent implements OnInit {
   };
 
   submitForm() {
-    console.log(this.validateForm.getRawValue())
+    this.http.post(`/user/resetUserPassword`, this.validateForm.getRawValue()).subscribe(() => {
+      this.service.success(`密码重置成功，即将跳转到用户列表`)
+      this.router.navigate(['/showUserList'])
+    })
   }
 }
