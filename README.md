@@ -1,4 +1,4 @@
-# Spring Boot OAuth2 Example
+# Angular+SpringBoot+OAuth2授权集成的示例项目
 
 ## 主要功能
 
@@ -45,6 +45,14 @@
 ![文件目录结构2](docs/img/文件目录结构2.png)
 
 ![文件目录结构3](docs/img/文件目录结构3.png)
+
+## 授权和资源服务器的集成以及分离
+
+本项目是授权和资源服务器的分离示例。
+
+集成示例可以参考: https://gitee.com/consolelog/spring-boot-oauth2-single-service-example
+
+git地址: https://gitee.com/consolelog/spring-boot-oauth2-single-service-example.git
 
 ## 参考文档
 
