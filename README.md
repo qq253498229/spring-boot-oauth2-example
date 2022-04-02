@@ -38,12 +38,13 @@
 
 ## 文件结构
 
-- authorization-server: 授权服务器（权限中心）
-- resource-server: 资源服务器（客户端，负责具体业务）
-- sql: 数据库文件
-    - schema.sql: 表结构
-    - initial-data.sql: 初始化数据
-- demo-frontend: 前端项目
+![文件目录结构0](docs/img/文件目录结构0.png)
+
+![文件目录结构1](docs/img/文件目录结构1.png)
+
+![文件目录结构2](docs/img/文件目录结构2.png)
+
+![文件目录结构3](docs/img/文件目录结构3.png)
 
 ## 参考文档
 
